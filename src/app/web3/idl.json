@@ -1,0 +1,1096 @@
+{
+  "address": "DEGenPMwjmLCw9LmdvfCUK5M4XKrbep2rts4DDqG3J5x",
+  "metadata": {
+    "name": "degen_wall",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_metadata_account",
+      "discriminator": [
+        75,
+        73,
+        45,
+        178,
+        212,
+        194,
+        127,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "metadata_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "arg",
+                "path": "params.id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token"
+        },
+        {
+          "name": "sol_treasury_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "CreateMetadataAccountParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_metadata_account_mint",
+      "discriminator": [
+        242,
+        9,
+        22,
+        107,
+        12,
+        75,
+        131,
+        56
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "metadata_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "arg",
+                "path": "params.id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "token"
+        },
+        {
+          "name": "pool_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury_mint",
+          "writable": true
+        },
+        {
+          "name": "payer_token_account",
+          "writable": true
+        },
+        {
+          "name": "vault_wsol"
+        },
+        {
+          "name": "vault_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": {
+              "name": "CreateMetadataAccountParams"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_pool_account",
+      "discriminator": [
+        141,
+        39,
+        149,
+        90,
+        253,
+        66,
+        124,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "vault_wsol"
+        },
+        {
+          "name": "vault_mint"
+        },
+        {
+          "name": "treasury"
+        },
+        {
+          "name": "pool_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "discount",
+          "type": "u8"
+        },
+        {
+          "name": "burn",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "create_sol_treasury_account",
+      "discriminator": [
+        6,
+        215,
+        142,
+        145,
+        33,
+        201,
+        93,
+        76
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "sol_treasury_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "discount",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "delete_metadata_account",
+      "discriminator": [
+        141,
+        9,
+        58,
+        11,
+        141,
+        23,
+        1,
+        63
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "payer"
+        },
+        {
+          "name": "metadata_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "arg",
+                "path": "_id"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "delete_pool_account",
+      "discriminator": [
+        53,
+        98,
+        26,
+        225,
+        77,
+        47,
+        77,
+        136
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "pool_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delete_sol_treasury_account",
+      "discriminator": [
+        115,
+        82,
+        28,
+        202,
+        124,
+        51,
+        56,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "sol_treasury_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_pool_account",
+      "discriminator": [
+        117,
+        97,
+        171,
+        180,
+        210,
+        68,
+        106,
+        142
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "pool_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "discount",
+          "type": "u8"
+        },
+        {
+          "name": "burn",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "update_sol_treasury_account",
+      "discriminator": [
+        24,
+        29,
+        185,
+        233,
+        96,
+        169,
+        97,
+        79
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "sol_treasury_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  103,
+                  101,
+                  110,
+                  95,
+                  119,
+                  97,
+                  108,
+                  108
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "discount",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "MetadataAccount",
+      "discriminator": [
+        32,
+        224,
+        226,
+        224,
+        77,
+        64,
+        109,
+        234
+      ]
+    },
+    {
+      "name": "PoolAccount",
+      "discriminator": [
+        116,
+        210,
+        187,
+        119,
+        196,
+        196,
+        52,
+        137
+      ]
+    },
+    {
+      "name": "SolTreasuryAccount",
+      "discriminator": [
+        172,
+        119,
+        222,
+        247,
+        211,
+        84,
+        123,
+        69
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "MetadataAccountCreated",
+      "discriminator": [
+        169,
+        211,
+        83,
+        26,
+        243,
+        161,
+        192,
+        64
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "StopBeingPoor",
+      "msg": "Stop being poor!"
+    },
+    {
+      "code": 6001,
+      "name": "WhyAreYouDoingThisToMeBruv",
+      "msg": "Why are you doing this to me bruv?"
+    },
+    {
+      "code": 6002,
+      "name": "YouAreNotMyBoss",
+      "msg": "You are not my boss!"
+    },
+    {
+      "code": 6003,
+      "name": "NotEnoughMoneyForGas",
+      "msg": "Not enough money for gas!"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidWSOLAccount",
+      "msg": "Invalid WSOL Account"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidMintAccount",
+      "msg": "Invalid Mint account!"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidTreasuryAccount",
+      "msg": "Invalid Treasury Account!"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidTreasuryOwner",
+      "msg": "Invalid Treasury Owner!"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidPayerTokenAccount",
+      "msg": "Invalid Payer Token Account!"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidDiscountValue",
+      "msg": "Invalid Discount Value!"
+    },
+    {
+      "code": 6010,
+      "name": "ThisIsPointlessDude",
+      "msg": "This is pointless dude!"
+    },
+    {
+      "code": 6011,
+      "name": "EmptyData",
+      "msg": "Empty data!"
+    },
+    {
+      "code": 6012,
+      "name": "DataTooBig",
+      "msg": "Data too big!"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidData",
+      "msg": "Invalid data!"
+    },
+    {
+      "code": 6014,
+      "name": "URLTooBig",
+      "msg": "URL too big!"
+    },
+    {
+      "code": 6015,
+      "name": "TwitterStringTooBig",
+      "msg": "Twitter string too big!"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidTwitter",
+      "msg": "Invalid Twitter!"
+    },
+    {
+      "code": 6017,
+      "name": "NameStringTooBig",
+      "msg": "Name string too big!"
+    },
+    {
+      "code": 6018,
+      "name": "TickerStringTooBig",
+      "msg": "Ticker string too big!"
+    },
+    {
+      "code": 6019,
+      "name": "NoHttpPrefix",
+      "msg": "No Http Prefix!"
+    },
+    {
+      "code": 6020,
+      "name": "OverallStringTooBig",
+      "msg": "Overall string too big!"
+    }
+  ],
+  "types": [
+    {
+      "name": "CreateMetadataAccountParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                500
+              ]
+            }
+          },
+          {
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "name": "twitter",
+            "type": "string"
+          },
+          {
+            "name": "community",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "ticker",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MetadataAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "epoch",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                500
+              ]
+            }
+          },
+          {
+            "name": "socials",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MetadataAccountCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "token",
+            "type": "pubkey"
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                500
+              ]
+            }
+          },
+          {
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "name": "twitter",
+            "type": "string"
+          },
+          {
+            "name": "community",
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "ticker",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PoolAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_wsol",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "discount",
+            "type": "u8"
+          },
+          {
+            "name": "burn",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SolTreasuryAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "discount",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "AUTHORITY_PUBKEY",
+      "type": "pubkey",
+      "value": "H3v4uZwVuoCHDyTFezH196wUHxmm7NfBH2yxzUB6MpDZ"
+    },
+    {
+      "name": "DATA_DELIMITER",
+      "type": "u8",
+      "value": "255"
+    },
+    {
+      "name": "LAMPORTS_PER_PIXEL",
+      "type": "u64",
+      "value": "1000000"
+    },
+    {
+      "name": "MAX_DATA_SIZE",
+      "type": "u16",
+      "value": "500"
+    },
+    {
+      "name": "MAX_PX_NR",
+      "type": "u8",
+      "value": "100"
+    },
+    {
+      "name": "MAX_SOCIALS_SIZE",
+      "type": "u8",
+      "value": "195"
+    },
+    {
+      "name": "NAME_LENGTH",
+      "type": "u8",
+      "value": "30"
+    },
+    {
+      "name": "PX_HEIGHT",
+      "type": "u8",
+      "value": "50"
+    },
+    {
+      "name": "PX_SIZE",
+      "type": "u8",
+      "value": "5"
+    },
+    {
+      "name": "PX_WIDTH",
+      "type": "u8",
+      "value": "100"
+    },
+    {
+      "name": "SEED_PREFIX",
+      "type": "bytes",
+      "value": "[100, 101, 103, 101, 110, 95, 119, 97, 108, 108]"
+    },
+    {
+      "name": "STRING_DELIMITER",
+      "type": "string",
+      "value": "\"|\""
+    },
+    {
+      "name": "TICKER_LENGTH",
+      "type": "u8",
+      "value": "10"
+    },
+    {
+      "name": "TREASURY_PUBKEY",
+      "type": "pubkey",
+      "value": "AWJQAWxPE3hJz2XVrJDmBDdQk4pC2SjeKpLFhjUncCKM"
+    },
+    {
+      "name": "TWITTER_LENGTH",
+      "type": "u8",
+      "value": "15"
+    },
+    {
+      "name": "VERSION",
+      "type": "u8",
+      "value": "2"
+    },
+    {
+      "name": "WSOL_PUBKEY",
+      "type": "pubkey",
+      "value": "So11111111111111111111111111111111111111112"
+    }
+  ]
+}
