@@ -64,12 +64,13 @@ export default function CanvasReadonly(
     if (square) {
       const invertedColor = invertColor(square.color);
       ctx = drawPixel(x, y, invertedColor, squareSize, ctx); // Color the square with the inverted color
+      onSetSocials(square.socials);
     }
     if (prevSquare) {
       const { x, y, color } = prevSquare;
       ctx = drawPixel(x, y, color, squareSize, ctx);
     }
-  }, [hoveredSquare, squareSize, canvasLayout]);
+  }, [hoveredSquare, squareSize, canvasLayout, onSetSocials]);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
