@@ -43,14 +43,18 @@ export default function CanvasWrapper(
   const isInitialRender = useRef(true);
   const { connection } = useConnection();
   const { height, width } = useWindowDimensions();
+  const [squareSize, setSquareSize] = useState(SQUARE_MIN_SIZE);
 
-  const squareSize = Math.max(
-    SQUARE_MIN_SIZE,
-    Math.min(
-      Math.floor((width * CANVAS_DISPLAY_RATIO) / PX_WIDTH),
-      Math.floor((height * CANVAS_DISPLAY_RATIO) / PX_HEIGHT)
-    )
-  );
+  useEffect(() => {
+    const newSquareSize = Math.max(
+      SQUARE_MIN_SIZE,
+      Math.min(
+        Math.floor((width * CANVAS_DISPLAY_RATIO) / PX_WIDTH),
+        Math.floor((height * CANVAS_DISPLAY_RATIO) / PX_HEIGHT)
+      )
+    );
+    setSquareSize(newSquareSize);
+  }, [width, height]);
 
   const canvasReadonlyProps: CanvasReadonlyProps = {
     squareSize,
