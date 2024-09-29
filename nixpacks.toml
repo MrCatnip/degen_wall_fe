@@ -1,5 +1,2 @@
-[phases]
-preinstall = "apt-get update && apt-get install -y python3 build-essential && npm config set python /usr/bin/python3"
-
-[dependencies]
-runtime = ["python3", "build-essential"]
+[phases.setup]
+    nixPkgs = ['...', 'python3']
