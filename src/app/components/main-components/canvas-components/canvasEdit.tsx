@@ -66,7 +66,7 @@ export default function CanvasEdit(
     if (!canvas) return;
 
     const context = canvas.getContext("2d");
-    const previewContext = previewCanvas?.getContext("2d");
+    let previewContext = previewCanvas?.getContext("2d");
     if (!context) return;
     canvas.width = PX_WIDTH * squareSize;
     canvas.height = PX_HEIGHT * squareSize;
@@ -80,23 +80,14 @@ export default function CanvasEdit(
         for (let i = 0; i < pixelArray.length; i++) {
           for (let j = 0; j < pixelArray[i].length; j++) {
             const color = pixelArray[i][j];
-            if (color) {
-              previewContext.fillStyle = `#${color}`;
-              previewContext.fillRect(
-                j * squareSize,
-                i * squareSize,
+            if (color)
+              previewContext = drawPixel(
+                j,
+                i,
+                color,
                 squareSize,
-                squareSize
+                previewContext
               );
-              previewContext.strokeStyle = `#${SQUARE_BORDER_COLOR}`;
-              previewContext.lineWidth = 1;
-              previewContext.strokeRect(
-                j * squareSize,
-                i * squareSize,
-                squareSize,
-                squareSize
-              );
-            }
           }
         }
       }
