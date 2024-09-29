@@ -252,3 +252,15 @@ export const initAndGetCanvas = async (
     return null;
   }
 };
+
+export const drawPixel = (
+  x: number,
+  y: number,
+  color: string,
+  squareSize: number,
+  ctx: CanvasRenderingContext2D
+) => {
+  ctx.fillStyle = `#${color}`; // Set the fill color
+  ctx.fillRect(x * squareSize, y * squareSize, squareSize, squareSize); // Draw the filled square
+  return ctx; // Return the context
+};

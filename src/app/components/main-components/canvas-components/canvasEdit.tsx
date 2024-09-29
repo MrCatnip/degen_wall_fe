@@ -9,6 +9,7 @@ import {
 } from "@/app/types";
 import { useEffect, useRef, useState } from "react";
 import { PX_HEIGHT, PX_WIDTH, SQUARE_BORDER_COLOR } from "@/app/constants";
+import { drawPixel } from "./canvas-util";
 
 export default function CanvasEdit(
   props: CanvasEditProps & CanvasReadonlyProps
@@ -73,18 +74,6 @@ export default function CanvasEdit(
       previewCanvas.width = squareSize * pixelArray.length;
       previewCanvas.height = squareSize * pixelArray.length;
     }
-    const drawPixel = (x: number, y: number, color: string) => {
-      context.fillStyle = `#${color}`;
-      context.fillRect(x * squareSize, y * squareSize, squareSize, squareSize);
-      context.strokeStyle = `#${SQUARE_BORDER_COLOR}`;
-      context.lineWidth = 1;
-      context.strokeRect(
-        x * squareSize,
-        y * squareSize,
-        squareSize,
-        squareSize
-      );
-    };
 
     const drawPreview = () => {
       if (previewCanvas && previewContext && pixelArray.length) {
@@ -202,7 +191,7 @@ export default function CanvasEdit(
     canvasEditable.current.forEach((square, index) => {
       const row = Math.floor(index / PX_WIDTH);
       const col = index % PX_WIDTH;
-      drawPixel(col, row, square.color);
+      drawPixel(col, row, square.color, squareSize, context);
     });
 
     if (pixelArray.length) drawPreview();
@@ -221,7 +210,7 @@ export default function CanvasEdit(
                 const drawY = y + i;
                 const index = drawY * PX_WIDTH + drawX;
                 if (drawX < canvas.width && drawY < canvas.height) {
-                  drawPixel(drawX, drawY, color);
+                  drawPixel(drawX, drawY, color, squareSize, context);
                   addPixelAction(index, color);
                   onColorPixel(index, color);
                 }
@@ -233,11 +222,11 @@ export default function CanvasEdit(
           const index = y * PX_WIDTH + x;
           if (isEraseMode) {
             const originalColor = canvasReadonlyCopy.current[index].color;
-            drawPixel(x, y, originalColor);
+            drawPixel(x, y, originalColor, squareSize, context);
             addPixelAction(index);
             onErasePixel(index);
           } else {
-            drawPixel(x, y, drawColor);
+            drawPixel(x, y, drawColor, squareSize, context);
             addPixelAction(index, drawColor);
             onColorPixel(index);
           }

@@ -3,20 +3,7 @@
 import { CanvasReadonlyProps, Socials } from "@/app/types";
 import { PX_HEIGHT, PX_WIDTH, SQUARE_BORDER_COLOR } from "@/app/constants";
 import { useEffect, useRef, useState } from "react";
-import { invertColor } from "./canvas-util";
-
-// Draw a pixel
-const drawPixel = (
-  x: number,
-  y: number,
-  color: string,
-  squareSize: number,
-  ctx: CanvasRenderingContext2D
-) => {
-  ctx.fillStyle = `#${color}`; // Set the fill color
-  ctx.fillRect(x * squareSize, y * squareSize, squareSize, squareSize); // Draw the filled square
-  return ctx; // Return the context
-};
+import { drawPixel, invertColor } from "./canvas-util";
 
 export default function CanvasReadonly(
   props: CanvasReadonlyProps & { onSetSocials: (socials: Socials) => void }
