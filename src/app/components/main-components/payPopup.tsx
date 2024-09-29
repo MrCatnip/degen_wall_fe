@@ -5,13 +5,15 @@ import {
   TokenBalanceDisplay,
 } from "@/app/common";
 import {
+  MAX_DATA_SIZE,
   MAX_SOCIALS_SIZE,
   NAME_LENGTH,
+  PX_SIZE,
   TICKER_LENGTH,
   USER_REGEX,
 } from "@/app/constants";
 import { AnchorContext } from "@/app/context/AnchorProvider";
-import { PayPopupProps, Socials } from "@/app/types";
+import { ColoredPixelsDict, PayPopupProps, Socials } from "@/app/types";
 import { isValidAddress } from "@/app/web3/misc";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
@@ -56,6 +58,35 @@ const EMPTY_SOCIALS: Socials = {
   image: "",
 };
 
+const splitObjectIntoChunks = (
+  obj: ColoredPixelsDict,
+  chunkSize = MAX_DATA_SIZE / PX_SIZE
+) => {
+  // Get all keys and sort them (assuming they are numeric keys)
+  const keys = Object.keys(obj)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  // Create an array to hold the sub-objects
+  const subObjects: ColoredPixelsDict[] = [];
+
+  // Iterate over the keys and create sub-objects of at most chunkSize keys
+  for (let i = 0; i < keys.length; i += chunkSize) {
+    const chunkKeys = keys.slice(i, i + chunkSize);
+    const chunk: ColoredPixelsDict = {};
+
+    // Add the key-value pairs to the current chunk
+    chunkKeys.forEach((key) => {
+      chunk[key] = obj[key];
+    });
+
+    // Push the chunk to the array of sub-objects
+    subObjects.push(chunk);
+  }
+
+  return subObjects;
+};
+
 const DEFAULT_SOCIALS = getDefaultSocials();
 
 const calculateUtf8StringSize = (socials: Socials) => {
@@ -80,6 +111,7 @@ export default function PayPopup(props: PayPopupProps) {
   const toast = useRef<Toast>(null);
   const [isLoading, setIsLoading] = useState(false);
   const selectTokenContext = useContext(SelectTokenContext);
+  const [chunk, setChunk] = useState({ length: 0, count: 0 });
 
   useEffect(() => {
     if (popupPay && isInitialRender.current) {
@@ -196,11 +228,27 @@ export default function PayPopup(props: PayPopupProps) {
     setIsLoading(true);
     if (anchorContext && wallet?.publicKey) {
       try {
-        await anchorContext.createMetadataAccount(
-          { ...socials, payer: wallet?.publicKey.toString() },
-          coloredPixelsDict,
-          selectTokenContext.token
-        );
+        if (Object.keys(coloredPixelsDict).length <= 100)
+          await anchorContext.createMetadataAccount(
+            { ...socials, payer: wallet?.publicKey.toString() },
+            coloredPixelsDict,
+            selectTokenContext.token
+          );
+        else {
+          const coloredPixelsDictArray =
+            splitObjectIntoChunks(coloredPixelsDict);
+          const length = coloredPixelsDictArray.length;
+          let count = 0;
+          for (const chunk of coloredPixelsDictArray) {
+            count++;
+            setChunk({ count, length });
+            await anchorContext.createMetadataAccount(
+              { ...socials, payer: wallet?.publicKey.toString() },
+              chunk, // Use the current chunk
+              selectTokenContext.token
+            );
+          }
+        }
         toast?.current?.show({
           severity: "success",
           summary: "Success!",
@@ -313,7 +361,12 @@ export default function PayPopup(props: PayPopupProps) {
             {TextField({ id: "token", type: "text", validate: validateToken })}
           </div>
           {isLoading ? (
-            <CircularProgress /> // Render a spinner when loading
+            <div>
+              <CircularProgress />
+              <span>
+                {chunk.count}/{chunk.length}
+              </span>
+            </div>
           ) : (
             <button
               onClick={onPay}
