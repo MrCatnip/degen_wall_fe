@@ -39,6 +39,7 @@ import { EVENT_NAME } from "@/app/constantsUncircular";
 const TWITTER_REGEX = /(?:twitter\.com\/|x\.com\/)([A-Za-z0-9_]+)(?:[/?]|$)/;
 const INVALID_URL_ERROR = "Invalid URL";
 const TX_TIMEOUT_MS = 30 * 1000;
+const MAX_RETRY_ATTEMPTS = 3;
 
 const arraysEqual = (arr1: number[], arr2: number[]) => {
   if (arr1.length !== arr2.length) {
@@ -130,6 +131,7 @@ export default function PayPopup(props: PayPopupProps) {
   const socialsSize = calculateUtf8StringSize(socials);
   const toast = useRef<Toast>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const selectTokenContext = useContext(SelectTokenContext);
   const [chunk, setChunk] = useState({ length: 0, count: 0 });
 
@@ -246,10 +248,13 @@ export default function PayPopup(props: PayPopupProps) {
 
   const onPay = async () => {
     setIsLoading(true);
+    setRetryCount(0);
     if (anchorContext && wallet?.publicKey) {
       try {
         const processChunks = async (chunks: ColoredPixelsDict[]) => {
           for (let i = 0; i < chunks.length; i++) {
+            if (retryCount > MAX_RETRY_ATTEMPTS)
+              throw new Error("Couldn't process tx");
             setChunk({ count: i + 1, length: chunks.length });
             const id = anchorContext.generateId();
 
@@ -285,7 +290,12 @@ export default function PayPopup(props: PayPopupProps) {
               eventPromise,
               timeoutPromise,
             ]);
-            console.log(txResult);
+            if (txResult !== "Success") {
+              i--;
+              setRetryCount((prevRetrycount) => prevRetrycount + 1);
+            } else if (retryCount) {
+              setRetryCount(0);
+            }
           }
         };
 
@@ -414,6 +424,11 @@ export default function PayPopup(props: PayPopupProps) {
               <span>
                 {chunk.count}/{chunk.length}
               </span>
+              {retryCount && (
+                <span>
+                  Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
+                </span>
+              )}
             </div>
           ) : (
             <button
