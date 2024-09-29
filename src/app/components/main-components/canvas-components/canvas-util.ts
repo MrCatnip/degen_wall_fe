@@ -23,21 +23,24 @@ const DEFAULLT_PAYER = "DEGenPMwjmLCw9LmdvfCUK5M4XKrbep2rts4DDqG3J5x";
 const DEFAULT_WEBSITE = "https://degen_wall.com";
 const DEFAULT_TWITTER = "https://x.com/degen_wall";
 const DEFAULT_COMMUNITY = "https://t.me/degen_wall";
-const DEFAULT_IMAGE = "https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg";
+const DEFAULT_IMAGE =
+  "https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg";
 const DEFAULT_NAME = "Degen Wall";
 const DEFAULT_TICKER = "DEV";
 const DEFAULT_DESCRIPTION = "Put your pixels on display dawg";
 const DEFAULT_COLOR = "1b1d28";
 const URL_PREFIX = "https://";
+const CANVAS_SIZE = PX_WIDTH * PX_HEIGHT;
 
 const IMAGE_REGEX = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
 
 let canvas: CanvasLayout = [];
+let isColoredPixel = Array(CANVAS_SIZE).fill(false);
 
 export const getDefaultCanvas = (): CanvasLayout => {
   const default_socials = getDefaultSocials();
   const default_pixel = getDefaultPixel(default_socials);
-  return Array(PX_WIDTH * PX_HEIGHT).fill(default_pixel);
+  return Array(CANVAS_SIZE).fill(default_pixel);
 };
 
 export const invertColor = (color: string) => {
@@ -182,12 +185,18 @@ export const getUpdatedCanvas = (
     if (G < 0 || G > 255) throw new Error(`Invalid G ${G} at index ${i}`);
     if (B < 0 || B > 255) throw new Error(`Invalid B ${B} at index ${i}`);
     const index = x + y * PX_WIDTH;
-    if (pixelsLeft && canvas[index].socials.token === DEFAULT_TOKEN)
+    if (pixelsLeft && !isColoredPixel[index]) {
       pixelsLeft--;
-    canvas[index] = {
-      color: R.toString(16) + G.toString(16) + B.toString(16),
-      socials,
-    };
+      isColoredPixel[index] = true;
+      canvas[index] = {
+        color: R.toString(16) + G.toString(16) + B.toString(16),
+        socials,
+      };
+    } else if (!pixelsLeft)
+      canvas[index] = {
+        color: R.toString(16) + G.toString(16) + B.toString(16),
+        socials,
+      };
     if (pixelsLeft && pixelsLeft <= 0) break;
   }
   return pixelsLeft ? pixelsLeft : canvas;
@@ -197,9 +206,13 @@ const getLatestCanvas = async (endpoint: string) => {
   const canvas = getDefaultCanvas();
   const anchorInterface = new AnchorInterface(new Connection(endpoint));
   const accounts = await anchorInterface.getAllAccounts(endpoint);
-  let pixelsLeft = PX_WIDTH * PX_WIDTH;
+  let pixelsLeft = CANVAS_SIZE;
   if (accounts) {
+    let i = 0;
     for (const account of accounts) {
+      if (i === 0) {
+        i++;
+      }
       try {
         pixelsLeft = getUpdatedCanvas(canvas, account, pixelsLeft) as number;
         if (pixelsLeft <= 0) break;
@@ -213,7 +226,7 @@ const getLatestCanvas = async (endpoint: string) => {
 
 export const getEmptyCanvas = () => {
   const socials = getDefaultSocials();
-  return Array.from({ length: PX_HEIGHT * PX_WIDTH }, () => ({
+  return Array.from({ length: CANVAS_SIZE }, () => ({
     color: "",
     socials,
   }));

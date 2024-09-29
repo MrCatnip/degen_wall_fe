@@ -80,13 +80,12 @@ export default function CanvasWrapper(
     const onInitAndGetCanvas = async () => {
       const endpoint = localStorage.getItem(RPC_URL_KEY) || "";
       const initialCanvas = await initAndGetCanvas(endpoint);
-      if (initialCanvas) {
-        setCanvasReadonly(initialCanvas);
-        isInitialRender.current = false;
-      } else console.warn("Please use a valid RPC url for now");
+      if (initialCanvas) setCanvasReadonly(initialCanvas);
+      else console.warn("Please use a valid RPC url for now");
     };
 
     if (isInitialRender.current) {
+      isInitialRender.current = false;
       onInitAndGetCanvas();
     }
   }, [canvasReadonly, connection]);
