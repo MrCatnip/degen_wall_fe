@@ -33,6 +33,7 @@ const TREASURY_PUBLICKEY = new PublicKey(
 const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
   "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
 );
+const COMMITMENT = "confirmed";
 
 export default class AnchorInterface {
   private program: Program<DegenWall>;
@@ -51,7 +52,7 @@ export default class AnchorInterface {
 
   constructor(connection: Connection, wallet?: AnchorWallet) {
     const provider = wallet
-      ? new AnchorProvider(connection, wallet)
+      ? new AnchorProvider(connection, wallet, { commitment: COMMITMENT })
       : new AnchorProvider(connection, null as unknown as AnchorWallet);
     this.program = new Program<DegenWall>(IDL as DegenWall, provider);
     this.MAX_DATA_SIZE = this.getNumberValue("maxDataSize");
