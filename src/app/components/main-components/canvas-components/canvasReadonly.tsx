@@ -13,12 +13,9 @@ const drawPixel = (
   squareSize: number,
   ctx: CanvasRenderingContext2D
 ) => {
-  ctx.fillStyle = `#${color}`;
-  ctx.fillRect(x * squareSize, y * squareSize, squareSize, squareSize);
-  ctx.strokeStyle = `#${SQUARE_BORDER_COLOR}`;
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x * squareSize, y * squareSize, squareSize, squareSize);
-  return ctx;
+  ctx.fillStyle = `#${color}`; // Set the fill color
+  ctx.fillRect(x * squareSize, y * squareSize, squareSize, squareSize); // Draw the filled square
+  return ctx; // Return the context
 };
 
 export default function CanvasReadonly(
