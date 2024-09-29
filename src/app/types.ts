@@ -111,6 +111,7 @@ export type MenuSectionProps = {
 };
 
 export type MetadataAccountCreatedEvent = {
+  id: number[];
   mint: PublicKey;
   timestamp: BN;
   payer: PublicKey;
@@ -244,3 +245,5 @@ export type BalanceCache = {
   balance: number;
   walletAddress: string;
 };
+
+export type TxResult = "Success" | "Timeout" | "Error" | "EventError";

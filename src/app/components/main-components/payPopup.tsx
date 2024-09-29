@@ -13,7 +13,12 @@ import {
   USER_REGEX,
 } from "@/app/constants";
 import { AnchorContext } from "@/app/context/AnchorProvider";
-import { ColoredPixelsDict, PayPopupProps, Socials } from "@/app/types";
+import {
+  ColoredPixelsDict,
+  PayPopupProps,
+  Socials,
+  TxResult,
+} from "@/app/types";
 import { isValidAddress } from "@/app/web3/misc";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
@@ -28,9 +33,24 @@ import { getDefaultSocials } from "./canvas-components/canvas-util";
 import { Toast } from "primereact/toast";
 import { CircularProgress } from "@mui/material";
 import { SelectTokenContext } from "@/app/context/SelectTokenProvider";
+import eventEmitter from "@/app/hooks/eventEmitter";
+import { EVENT_NAME } from "@/app/constantsUncircular";
 
 const TWITTER_REGEX = /(?:twitter\.com\/|x\.com\/)([A-Za-z0-9_]+)(?:[/?]|$)/;
 const INVALID_URL_ERROR = "Invalid URL";
+const TX_TIMEOUT_MS = 30 * 1000;
+
+const arraysEqual = (arr1: number[], arr2: number[]) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  return true;
+};
 
 const extractTwitterUser = (url: string) => {
   const match = url.match(TWITTER_REGEX);
@@ -228,27 +248,55 @@ export default function PayPopup(props: PayPopupProps) {
     setIsLoading(true);
     if (anchorContext && wallet?.publicKey) {
       try {
-        if (Object.keys(coloredPixelsDict).length <= 100)
-          await anchorContext.createMetadataAccount(
-            { ...socials, payer: wallet?.publicKey.toString() },
-            coloredPixelsDict,
-            selectTokenContext.token
-          );
-        else {
+        const processChunks = async (chunks: ColoredPixelsDict[]) => {
+          for (let i = 0; i < chunks.length; i++) {
+            setChunk({ count: i + 1, length: chunks.length });
+            const id = anchorContext.generateId();
+
+            // Create a promise for the event listener
+            const eventPromise: Promise<TxResult> = new Promise((resolve) => {
+              const handleEvent = (eventId: number[]) => {
+                try {
+                  if (arraysEqual(id, eventId)) {
+                    resolve("Success");
+                  }
+                } catch (error) {
+                  console.error(error);
+                  resolve("EventError");
+                } finally {
+                  eventEmitter.off(EVENT_NAME, handleEvent); // Unsubscribe from the event after it resolves
+                }
+              };
+              eventEmitter.on(EVENT_NAME, handleEvent);
+            });
+
+            const timeoutPromise: Promise<TxResult> = new Promise((resolve) =>
+              setTimeout(() => resolve("Timeout"), TX_TIMEOUT_MS)
+            );
+
+            const txResult: TxResult = await Promise.race([
+              anchorContext.createMetadataAccount(
+                //@ts-expect-error shut the fuck up
+                { ...socials, payer: wallet?.publicKey.toString() },
+                chunks[i],
+                selectTokenContext.token,
+                id
+              ),
+              eventPromise,
+              timeoutPromise,
+            ]);
+            console.log(txResult);
+          }
+        };
+
+        if (Object.keys(coloredPixelsDict).length <= 100) {
+          await processChunks([coloredPixelsDict]);
+        } else {
           const coloredPixelsDictArray =
             splitObjectIntoChunks(coloredPixelsDict);
-          const length = coloredPixelsDictArray.length;
-          let count = 0;
-          for (const chunk of coloredPixelsDictArray) {
-            count++;
-            setChunk({ count, length });
-            await anchorContext.createMetadataAccount(
-              { ...socials, payer: wallet?.publicKey.toString() },
-              chunk, // Use the current chunk
-              selectTokenContext.token
-            );
-          }
+          await processChunks(coloredPixelsDictArray);
         }
+
         toast?.current?.show({
           severity: "success",
           summary: "Success!",

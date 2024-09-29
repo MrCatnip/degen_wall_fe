@@ -14,6 +14,7 @@ import {
   Socials,
   StringType,
   Token,
+  TxResult,
   validateString,
 } from "../types";
 import * as borsh from "@coral-xyz/borsh";
@@ -111,11 +112,16 @@ export default class AnchorInterface {
       .sort((a, b) => b.timestamp - a.timestamp);
   }
 
+  generateId() {
+    return Array.from(Keypair.generate().publicKey.toBytes());
+  }
+
   async createMetadataAccount(
     socials: Socials,
     dataRAW: ColoredPixelsDict,
-    paymentToken: Token
-  ) {
+    paymentToken: Token,
+    id: number[]
+  ): Promise<TxResult> {
     const {
       token,
       website = "",
@@ -129,7 +135,6 @@ export default class AnchorInterface {
     } = socials;
     const authority = new PublicKey(payer);
     const token_publickey = new PublicKey(token || DEFAULT_TOKEN);
-    const id = Array.from(Keypair.generate().publicKey.toBytes());
     const ID_SEED = Buffer.from(id);
     const PAYER_SEED = authority.toBuffer();
     const [metadataAccount] = web3.PublicKey.findProgramAddressSync(
@@ -170,8 +175,15 @@ export default class AnchorInterface {
               paymentToken,
               PAYER_SEED
             );
-      await metadataAccountWrapped.rpc();
+      try {
+        await metadataAccountWrapped.rpc();
+        return "Success";
+      } catch (error) {
+        console.error(error);
+        return "Error";
+      }
     }
+    return "Error"; //Too much data for 1 tx
   }
 
   private getMetadataAccountWrapped(
