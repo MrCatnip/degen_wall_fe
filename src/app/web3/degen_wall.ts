@@ -900,6 +900,15 @@ export type DegenWall = {
         "kind": "struct",
         "fields": [
           {
+            "name": "id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
             "name": "mint",
             "type": "pubkey"
           },
