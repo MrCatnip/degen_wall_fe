@@ -1,15 +1,8 @@
 import { BackdropCommon } from "@/app/common";
-import {
-  MAX_DATA_SIZE,
-  MAX_JITO_TX_NR,
-  PX_HEIGHT,
-  PX_SIZE,
-  PX_WIDTH,
-} from "@/app/constants";
-import {  PixelArray, UploadPopupProps } from "@/app/types";
+import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
+import { PixelArray, UploadPopupProps } from "@/app/types";
 import { useRef, useEffect, useState } from "react";
 
-const MAX_PX_SIZE = (MAX_DATA_SIZE * MAX_JITO_TX_NR) / PX_SIZE;
 const UNEXPECTED_ERROR_MESSAGE = "Unexpected error";
 
 export default function UploadPopup(props: UploadPopupProps) {
@@ -96,10 +89,6 @@ export default function UploadPopup(props: UploadPopupProps) {
                   pixelArray[rowIndex][colIndex] = hex;
                 }
               }
-              if (pixelCount > MAX_PX_SIZE)
-                throw new Error(
-                  `Image total size (width * height) should not exceed ${MAX_PX_SIZE}`
-                );
               // Save the pixel array to state
               setPixelArray(pixelArray);
             }

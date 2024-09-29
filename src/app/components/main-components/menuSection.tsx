@@ -1,4 +1,4 @@
-import { MAX_DATA_SIZE, MAX_JITO_TX_NR, PX_SIZE } from "@/app/constants";
+import { MAX_DATA_SIZE, PX_SIZE } from "@/app/constants";
 import { Action, MenuSectionProps } from "@/app/types";
 import { ColorPicker } from "primereact/colorpicker";
 
@@ -22,9 +22,7 @@ export default function MenuSection(props: MenuSectionProps) {
   } = props;
 
   const handleOpenPopupPay = () => {
-    coloredPixelsCount > MAX_PX_NR * MAX_JITO_TX_NR
-      ? console.warn("Too many pixels you fat ass")
-      : onOpenPopupPay();
+    onOpenPopupPay();
   };
 
   return (
@@ -95,15 +93,10 @@ export default function MenuSection(props: MenuSectionProps) {
                 ? "white"
                 : coloredPixelsCount <= MAX_PX_NR
                 ? "green"
-                : coloredPixelsCount <= MAX_PX_NR * MAX_JITO_TX_NR
-                ? "orange"
                 : "red",
           }}
         >
-          {coloredPixelsCount > 0 &&
-            `${coloredPixelsCount}/${
-              MAX_PX_NR * (coloredPixelsCount <= MAX_PX_NR ? 1 : MAX_JITO_TX_NR)
-            } PX`}
+          {coloredPixelsCount > 0 && `${coloredPixelsCount}/${MAX_PX_NR} PX`}
         </span>
       </div>
     </div>
