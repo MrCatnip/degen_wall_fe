@@ -82,7 +82,7 @@ export default function CanvasReadonly(
       ctx = drawPixel(x, y, invertedColor, squareSize, ctx); // Color the square with the inverted color
     }
     if (prevSquare) {
-      const {x, y, color} = prevSquare
+      const { x, y, color } = prevSquare;
       ctx = drawPixel(x, y, color, squareSize, ctx);
     }
   }, [hoveredSquare, squareSize, canvasLayout]);
@@ -102,7 +102,7 @@ export default function CanvasReadonly(
       y < PX_HEIGHT &&
       (hoveredSquare?.x !== x || hoveredSquare?.y !== y)
     ) {
-      const {color} = canvasLayout[x + y * PX_WIDTH];
+      const { color } = canvasLayout[x + y * PX_WIDTH];
       const prevSquare = hoveredSquare
         ? {
             x: hoveredSquare.x,
