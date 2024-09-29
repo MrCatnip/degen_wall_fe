@@ -154,7 +154,7 @@ export const getUpdatedCanvas = (
   account: MetadataAccountParsed,
   pixelsLeft?: number
 ): number | CanvasLayout => {
-  let canvas;
+  let canvas: CanvasLayout;
   if (pixelsLeft)
     canvas = oldCanvas; // think of pixelsLeft as a isMutatingInPlace bool
   else canvas = JSON.parse(JSON.stringify(oldCanvas)); // look at return values to get a better picture
@@ -189,12 +189,18 @@ export const getUpdatedCanvas = (
       pixelsLeft--;
       isColoredPixel[index] = true;
       canvas[index] = {
-        color: R.toString(16) + G.toString(16) + B.toString(16),
+        color:
+          R.toString(16).padStart(2, "0") +
+          G.toString(16).padStart(2, "0") +
+          B.toString(16).padStart(2, "0"),
         socials,
       };
     } else if (!pixelsLeft)
       canvas[index] = {
-        color: R.toString(16) + G.toString(16) + B.toString(16),
+        color:
+          R.toString(16).padStart(2, "0") +
+          G.toString(16).padStart(2, "0") +
+          B.toString(16).padStart(2, "0"),
         socials,
       };
     if (pixelsLeft && pixelsLeft <= 0) break;
