@@ -10,9 +10,6 @@ import {
 } from "@/app/types";
 import { CanvasReadonly, CanvasEdit } from "./canvas-components";
 import {
-  memo,
-  useCallback,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -30,8 +27,6 @@ import { EVENT_NAME } from "@/app/constantsUncircular";
 
 const CANVAS_DISPLAY_RATIO = 0.8;
 const SQUARE_MIN_SIZE = 8;
-
-const CanvasEditMemo = memo(CanvasEdit);
 
 export default function CanvasWrapper(
   props: CanvasEditProps & { onSetSocials: (socials: Socials) => void }
@@ -95,10 +90,10 @@ export default function CanvasWrapper(
         {...canvasReadonlyProps}
         onSetSocials={onSetSocials}
       ></CanvasReadonly>
-      <CanvasEditMemo
+      <CanvasEdit
         {...canvasReadonlyProps}
         {...canvasEditProps}
-      ></CanvasEditMemo>
+      ></CanvasEdit>
     </div>
   );
 }
