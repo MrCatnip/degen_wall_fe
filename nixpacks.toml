@@ -1,4 +1,4 @@
 [phases.setup]
-    nixPkgs = ['...', 'python3']
+    nixPkgs = ['...', 'python3', 'libudev']
 
-    aptPkgs = ['build-essential']
+    aptPkgs = ['build-essential', 'libudev-dev']
