@@ -8,7 +8,7 @@ import {
   Action,
 } from "@/app/types";
 import { useEffect, useRef, useState } from "react";
-import { PX_HEIGHT, PX_WIDTH, SQUARE_BORDER_COLOR } from "@/app/constants";
+import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
 import { drawPixel } from "./canvas-util";
 
 export default function CanvasEdit(
@@ -112,19 +112,6 @@ export default function CanvasEdit(
         if (canvasActionsUndoed.current.length)
           canvasActionsUndoed.current = [];
       }
-      /*
-      const action = coloredPixelsActionsDict.current[index];
-      if (action?.newColor !== color) {
-        coloredPixelsActionsDict.current = {
-          ...coloredPixelsActionsDict.current,
-          [index]: {
-            prevColor: action?.newColor,
-            newColor: color,
-          },
-        };
-        canvasActionsUndoed.current = [];
-      }
-        */
     };
     const addCanvasAction = () => {
       const action = coloredPixelsActionsDict.current;

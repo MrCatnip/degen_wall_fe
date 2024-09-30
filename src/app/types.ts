@@ -30,18 +30,6 @@ export interface CanvasReadonlyProps {
   canvasReadonly: CanvasLayout;
 }
 
-interface SquareProps {
-  size: number;
-  metadataItem: MetadataItem;
-}
-
-export interface SquareReadonlyProps extends SquareProps {
-  onSetSocials: (socials: Socials) => void;
-  handleClick: (index: number) => void;
-  focusIndex: number | undefined;
-  index: number;
-}
-
 export enum Action {
   Undo = "Undo",
   Redo = "Redo",

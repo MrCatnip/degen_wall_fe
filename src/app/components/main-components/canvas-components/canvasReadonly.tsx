@@ -1,7 +1,7 @@
 "use client";
 
 import { CanvasReadonlyProps, Socials } from "@/app/types";
-import { PX_HEIGHT, PX_WIDTH, SQUARE_BORDER_COLOR } from "@/app/constants";
+import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
 import { useEffect, useRef, useState } from "react";
 import { drawPixel, invertColor } from "./canvas-util";
 
