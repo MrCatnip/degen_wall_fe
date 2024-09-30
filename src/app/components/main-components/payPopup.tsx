@@ -38,6 +38,7 @@ import { EVENT_NAME } from "@/app/constantsUncircular";
 
 const TWITTER_REGEX = /(?:twitter\.com\/|x\.com\/)([A-Za-z0-9_]+)(?:[/?]|$)/;
 const INVALID_URL_ERROR = "Invalid URL";
+const UNSUPPORTED_IMAGE_FORMAT_ERROR = "Unsupported Image Format!";
 const TX_TIMEOUT_MS = 30 * 1000;
 const MAX_RETRY_ATTEMPTS = 3;
 
@@ -63,6 +64,11 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 const isValidUrl = (urlString: string) => {
   return urlRegex({ strict: false, exact: true }).test("https://" + urlString);
 };
+
+function isValidImageUrl(url: string) {
+  const imageExtensions = /\.(apng|avif|gif|jpg|jpeg|png|svg|webp|bmp|ico)$/i;
+  return imageExtensions.test(url);
+}
 
 const parseUrl = (urlString: string) => {
   return urlString.replace(/^https?:\/\//, "");
@@ -238,6 +244,7 @@ export default function PayPopup(props: PayPopupProps) {
     if (imageHttps) {
       image = parseUrl(imageHttps);
       if (!isValidUrl(image)) errorLabel = INVALID_URL_ERROR;
+      if (!isValidImageUrl(image)) errorLabel = UNSUPPORTED_IMAGE_FORMAT_ERROR;
     }
     setSocials((prevSocials) => ({ ...prevSocials, image }));
     setErrorLabels((prevErrorLabels) => ({
