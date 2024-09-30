@@ -179,11 +179,14 @@ export default class AnchorInterface {
         await metadataAccountWrapped.rpc();
         return "Success";
       } catch (error) {
-        console.error(error);
-        return "Error";
+        console.error(error); //@ts-expect-error shut the fuck up!
+        if (error?.error?.message?.includes("User rejected the request"))
+          return "UserRejectedError"; //@ts-expect-error shut the fuck up!
+        if (error?.transactionMessage) //@ts-expect-error shut the fuck up!
+          return error.transactionMessage
       }
     }
-    return "Error"; //Too much data for 1 tx
+    return "UnexpectedError";
   }
 
   private getMetadataAccountWrapped(

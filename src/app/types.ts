@@ -234,4 +234,11 @@ export type BalanceCache = {
   walletAddress: string;
 };
 
-export type TxResult = "Success" | "Timeout" | "Error" | "EventError";
+export type ErrorTypes =
+  | "Success"
+  | "Timeout"
+  | "UnexpectedError"
+  | "EventError"
+  | "UserRejectedError";
+
+export type TxResult = ErrorTypes;

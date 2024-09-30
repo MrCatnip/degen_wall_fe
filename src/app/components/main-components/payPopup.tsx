@@ -248,13 +248,11 @@ export default function PayPopup(props: PayPopupProps) {
 
   const onPay = async () => {
     setIsLoading(true);
-    setRetryCount(0);
     if (anchorContext && wallet?.publicKey) {
       try {
         const processChunks = async (chunks: ColoredPixelsDict[]) => {
+          let retryCount = 0;
           for (let i = 0; i < chunks.length; i++) {
-            if (retryCount > MAX_RETRY_ATTEMPTS)
-              throw new Error("Couldn't process tx");
             setChunk({ count: i + 1, length: chunks.length });
             const id = anchorContext.generateId();
 
@@ -290,12 +288,26 @@ export default function PayPopup(props: PayPopupProps) {
               eventPromise,
               timeoutPromise,
             ]);
-            if (txResult !== "Success") {
+            if (txResult === "Success") retryCount = 0;
+            else if (txResult === "UserRejectedError")
+              throw new Error("User rejected request!");
+            else if (
+              txResult === "UnexpectedError" ||
+              txResult === "EventError"
+            )
+              throw new Error("Unexpected Error!");
+            else {
               i--;
-              setRetryCount((prevRetrycount) => prevRetrycount + 1);
-            } else if (retryCount) {
-              setRetryCount(0);
+              retryCount++;
             }
+            if (retryCount > MAX_RETRY_ATTEMPTS) {
+              throw new Error(
+                `Couldn't process tx no.${i + 1} after ${
+                  MAX_RETRY_ATTEMPTS + 1
+                } attempts. Reason: ${txResult}`
+              );
+            }
+            setRetryCount(retryCount);
           }
         };
 
@@ -319,13 +331,14 @@ export default function PayPopup(props: PayPopupProps) {
         console.error(error);
         toast?.current?.show({
           severity: "error",
-          summary: "Error!",
-          detail: "Transaction failed!",
+          summary: "Error!", //@ts-expect-error shut the fuck up!
+          detail: error.message,
           life: 3000,
         });
       }
     }
     setIsLoading(false);
+    setRetryCount(0);
   };
 
   const TextField = (props: {
@@ -419,16 +432,16 @@ export default function PayPopup(props: PayPopupProps) {
             {TextField({ id: "token", type: "text", validate: validateToken })}
           </div>
           {isLoading ? (
-            <div>
+            <div className="flex flex-col">
               <CircularProgress />
               <span>
                 {chunk.count}/{chunk.length}
               </span>
-              {retryCount && (
-                <span>
+              {
+                <span style={{ visibility: retryCount ? "visible" : "hidden" }}>
                   Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
                 </span>
-              )}
+              }
             </div>
           ) : (
             <button
