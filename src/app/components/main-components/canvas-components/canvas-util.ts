@@ -24,7 +24,7 @@ const DEFAULT_WEBSITE = "https://degen_wall.com";
 const DEFAULT_TWITTER = "https://x.com/degen_wall";
 const DEFAULT_COMMUNITY = "https://t.me/degen_wall";
 const DEFAULT_IMAGE =
-  "https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg";
+  "https://i.ibb.co/ABC/1500x500.jpg";
 const DEFAULT_NAME = "Degen Wall";
 const DEFAULT_TICKER = "DEV";
 const DEFAULT_DESCRIPTION = "Put your pixels on display dawg";
