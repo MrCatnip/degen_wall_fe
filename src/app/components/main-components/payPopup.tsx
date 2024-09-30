@@ -11,15 +11,8 @@ import {
   TICKER_LENGTH,
   USER_REGEX,
 } from "@/app/constants";
-import { AnchorContext } from "@/app/context/AnchorProvider";
-import {
-  ColoredPixelsDict,
-  PayPopupProps,
-  Socials,
-  TxResult,
-} from "@/app/types";
+import { PayButtonProps, PayPopupProps, Socials } from "@/app/types";
 import { isValidAddress } from "@/app/web3/misc";
-import { useWallet } from "@solana/wallet-adapter-react";
 import {
   HTMLInputTypeAttribute,
   useContext,
@@ -29,24 +22,19 @@ import {
 } from "react";
 import { getDefaultSocials } from "./canvas-components/canvas-util";
 import { Toast } from "primereact/toast";
-import { CircularProgress } from "@mui/material";
 import { SelectTokenContext } from "@/app/context/SelectTokenProvider";
-import eventEmitter from "@/app/hooks/eventEmitter";
-import { EVENT_NAME } from "@/app/constantsUncircular";
 import {
-  arraysEqual,
   calculateUtf8StringSize,
   extractTwitterUser,
   isValidImageUrl,
   isValidUrl,
   parseUrl,
-  splitObjectIntoChunks,
+  PayButton,
   TextField,
 } from "./pay_popup-components";
 
 const INVALID_URL_ERROR = "Invalid URL";
 const UNSUPPORTED_IMAGE_FORMAT_ERROR = "Unsupported Image Format!";
-const MAX_RETRY_ATTEMPTS = 3;
 
 const EMPTY_SOCIALS = getDefaultSocials();
 
@@ -59,17 +47,12 @@ for (let key in EMPTY_SOCIALS) {
 export default function PayPopup(props: PayPopupProps) {
   const { popupPay, onClosePopupPay, coloredPixelsDict, exitEditMode } = props;
   const menuRef = useRef<HTMLDivElement>(null);
-  const anchorContext = useContext(AnchorContext);
   const [socials, setSocials] = useState<Socials>(EMPTY_SOCIALS);
   const [errorLabels, setErrorLabels] = useState<Socials>(EMPTY_SOCIALS);
   const isInitialRender = useRef(true);
-  const wallet = useWallet();
   const socialsSize = calculateUtf8StringSize(socials);
   const toast = useRef<Toast>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
   const selectTokenContext = useContext(SelectTokenContext);
-  const [chunk, setChunk] = useState({ length: 0, count: 0 });
   const [imgUrl, setImgUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -187,96 +170,6 @@ export default function PayPopup(props: PayPopupProps) {
     }));
   };
 
-  const onPay = async () => {
-    setIsLoading(true);
-    if (anchorContext && wallet?.publicKey) {
-      try {
-        const processChunks = async (chunks: ColoredPixelsDict[]) => {
-          let retryCount = 0;
-          for (let i = 0; i < chunks.length; i++) {
-            setChunk({ count: i + 1, length: chunks.length });
-            const id = anchorContext.generateId();
-
-            // Create a promise for the event listener
-            const eventPromise: Promise<TxResult> = new Promise((resolve) => {
-              const handleEvent = (eventId: number[]) => {
-                try {
-                  if (arraysEqual(id, eventId)) {
-                    resolve("Success");
-                  }
-                } catch (error) {
-                  console.error(error);
-                  resolve("EventError");
-                } finally {
-                  eventEmitter.off(EVENT_NAME, handleEvent); // Unsubscribe from the event after it resolves
-                }
-              };
-              eventEmitter.on(EVENT_NAME, handleEvent);
-            });
-
-            const txResult: TxResult = await Promise.race([
-              anchorContext.createMetadataAccount(
-                //@ts-expect-error shut the fuck up
-                { ...socials, payer: wallet?.publicKey.toString() },
-                chunks[i],
-                selectTokenContext.token,
-                id
-              ),
-              eventPromise,
-            ]);
-            if (txResult === "Success") retryCount = 0;
-            else if (txResult === "UserRejectedError")
-              throw new Error("User rejected request!");
-            else if (
-              txResult === "UnexpectedError" ||
-              txResult === "EventError"
-            )
-              throw new Error("Unexpected Error!");
-            else {
-              i--;
-              retryCount++;
-            }
-            if (retryCount > MAX_RETRY_ATTEMPTS) {
-              throw new Error(
-                `Couldn't process tx no.${i + 1} after ${
-                  MAX_RETRY_ATTEMPTS + 1
-                } attempts. Reason: ${txResult}`
-              );
-            }
-            setRetryCount(retryCount);
-          }
-        };
-
-        if (Object.keys(coloredPixelsDict).length <= 100) {
-          await processChunks([coloredPixelsDict]);
-        } else {
-          const coloredPixelsDictArray =
-            splitObjectIntoChunks(coloredPixelsDict);
-          await processChunks(coloredPixelsDictArray);
-        }
-
-        toast?.current?.show({
-          severity: "success",
-          summary: "Success!",
-          detail: "That was a breeze, wasn't it?",
-          life: 3000,
-        });
-        exitEditMode();
-        onClosePopupPay();
-      } catch (error) {
-        console.error(error);
-        toast?.current?.show({
-          severity: "error",
-          summary: "Error!", //@ts-expect-error shut the fuck up!
-          detail: error.message,
-          life: 3000,
-        });
-      }
-    }
-    setIsLoading(false);
-    setRetryCount(0);
-  };
-
   const textFields: {
     id: keyof Socials;
     type: HTMLInputTypeAttribute;
@@ -290,6 +183,16 @@ export default function PayPopup(props: PayPopupProps) {
     { id: "description", type: "text", validate: validateDescription },
     { id: "image", type: "url", validate: validateImage },
   ];
+
+  const payButtonProps: PayButtonProps = {
+    token: selectTokenContext.token,
+    coloredPixelsDict,
+    toast,
+    exitEditMode,
+    onClosePopupPay,
+    socialsSize,
+    socials,
+  };
 
   return (
     <>
@@ -336,29 +239,7 @@ export default function PayPopup(props: PayPopupProps) {
               error: errorLabels["token"],
             })}
           </div>
-          {isLoading ? (
-            <div className="flex flex-col">
-              <CircularProgress />
-              <span>
-                {chunk.count}/{chunk.length}
-              </span>
-              {
-                <span style={{ visibility: retryCount ? "visible" : "hidden" }}>
-                  Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
-                </span>
-              }
-            </div>
-          ) : (
-            <button
-              onClick={onPay}
-              disabled={
-                !(anchorContext && wallet?.publicKey) ||
-                socialsSize > MAX_SOCIALS_SIZE
-              }
-            >
-              Pay
-            </button>
-          )}
+          <PayButton {...payButtonProps}></PayButton>
         </div>
       </BackdropCommon>
       <Toast ref={toast}></Toast>

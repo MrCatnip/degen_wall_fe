@@ -5,7 +5,8 @@ import {
   CSSSelectorObjectOrCssVariables,
 } from "@mui/system";
 import { PublicKey } from "@solana/web3.js";
-import { ReactNode } from "react";
+import { Toast } from "primereact/toast";
+import { ReactNode, RefObject } from "react";
 
 export type Socials = {
   payer: string;
@@ -202,6 +203,16 @@ export type FieldType = {
     | {
         array: AnchorArray;
       };
+};
+
+export type PayButtonProps = {
+  token: Token;
+  coloredPixelsDict: ColoredPixelsDict;
+  toast: RefObject<Toast>;
+  exitEditMode: () => void;
+  onClosePopupPay: () => void;
+  socialsSize: number;
+  socials: Socials;
 };
 
 export type AccountStruct =
