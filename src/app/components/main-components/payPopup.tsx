@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import {
   BackdropCommon,
   ConnectWalletButton,
@@ -5,10 +6,8 @@ import {
   TokenBalanceDisplay,
 } from "@/app/common";
 import {
-  MAX_DATA_SIZE,
   MAX_SOCIALS_SIZE,
   NAME_LENGTH,
-  PX_SIZE,
   TICKER_LENGTH,
   USER_REGEX,
 } from "@/app/constants";
@@ -28,103 +27,34 @@ import {
   useRef,
   useState,
 } from "react";
-import urlRegex from "url-regex";
 import { getDefaultSocials } from "./canvas-components/canvas-util";
 import { Toast } from "primereact/toast";
 import { CircularProgress } from "@mui/material";
 import { SelectTokenContext } from "@/app/context/SelectTokenProvider";
 import eventEmitter from "@/app/hooks/eventEmitter";
 import { EVENT_NAME } from "@/app/constantsUncircular";
+import {
+  arraysEqual,
+  calculateUtf8StringSize,
+  extractTwitterUser,
+  isValidImageUrl,
+  isValidUrl,
+  parseUrl,
+  splitObjectIntoChunks,
+  TextField,
+} from "./pay_popup-components";
 
-const TWITTER_REGEX = /(?:twitter\.com\/|x\.com\/)([A-Za-z0-9_]+)(?:[/?]|$)/;
 const INVALID_URL_ERROR = "Invalid URL";
 const UNSUPPORTED_IMAGE_FORMAT_ERROR = "Unsupported Image Format!";
-const TX_TIMEOUT_MS = 30 * 1000;
 const MAX_RETRY_ATTEMPTS = 3;
 
-const arraysEqual = (arr1: number[], arr2: number[]) => {
-  if (arr1.length !== arr2.length) {
-    return false;
+const EMPTY_SOCIALS = getDefaultSocials();
+
+for (let key in EMPTY_SOCIALS) {
+  if (EMPTY_SOCIALS.hasOwnProperty(key)) {
+    EMPTY_SOCIALS[key as keyof Socials] = "";
   }
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr1[i] !== arr2[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
-const extractTwitterUser = (url: string) => {
-  const match = url.match(TWITTER_REGEX);
-  return match ? match[1] : null;
-};
-
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
-const isValidUrl = (urlString: string) => {
-  return urlRegex({ strict: false, exact: true }).test("https://" + urlString);
-};
-
-function isValidImageUrl(url: string) {
-  const imageExtensions = /\.(apng|avif|gif|jpg|jpeg|png|svg|webp|bmp|ico)$/i;
-  return imageExtensions.test(url);
 }
-
-const parseUrl = (urlString: string) => {
-  return urlString.replace(/^https?:\/\//, "");
-};
-const EMPTY_SOCIALS: Socials = {
-  payer: "",
-  name: "",
-  ticker: "",
-  token: "",
-  website: "",
-  twitter: "",
-  community: "",
-  description: "",
-  image: "",
-};
-
-const splitObjectIntoChunks = (
-  obj: ColoredPixelsDict,
-  chunkSize = MAX_DATA_SIZE / PX_SIZE
-) => {
-  // Get all keys and sort them (assuming they are numeric keys)
-  const keys = Object.keys(obj)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  // Create an array to hold the sub-objects
-  const subObjects: ColoredPixelsDict[] = [];
-
-  // Iterate over the keys and create sub-objects of at most chunkSize keys
-  for (let i = 0; i < keys.length; i += chunkSize) {
-    const chunkKeys = keys.slice(i, i + chunkSize);
-    const chunk: ColoredPixelsDict = {};
-
-    // Add the key-value pairs to the current chunk
-    chunkKeys.forEach((key) => {
-      chunk[key] = obj[key];
-    });
-
-    // Push the chunk to the array of sub-objects
-    subObjects.push(chunk);
-  }
-
-  return subObjects;
-};
-
-const DEFAULT_SOCIALS = getDefaultSocials();
-
-const calculateUtf8StringSize = (socials: Socials) => {
-  const mergedString = Object.keys(socials)
-    .filter((key) => key !== "payer" && key !== "token") // Exclude "payer" and "token"
-    .map((key) => socials[key as keyof Socials])
-    .join("");
-  const encoder = new TextEncoder();
-  const utf8Bytes = encoder.encode(mergedString);
-  return utf8Bytes.length;
-};
 
 export default function PayPopup(props: PayPopupProps) {
   const { popupPay, onClosePopupPay, coloredPixelsDict, exitEditMode } = props;
@@ -140,6 +70,7 @@ export default function PayPopup(props: PayPopupProps) {
   const [retryCount, setRetryCount] = useState(0);
   const selectTokenContext = useContext(SelectTokenContext);
   const [chunk, setChunk] = useState({ length: 0, count: 0 });
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (popupPay && isInitialRender.current) {
@@ -244,8 +175,11 @@ export default function PayPopup(props: PayPopupProps) {
     if (imageHttps) {
       image = parseUrl(imageHttps);
       if (!isValidUrl(image)) errorLabel = INVALID_URL_ERROR;
-      if (!isValidImageUrl(image)) errorLabel = UNSUPPORTED_IMAGE_FORMAT_ERROR;
+      else if (!isValidImageUrl(image))
+        errorLabel = UNSUPPORTED_IMAGE_FORMAT_ERROR;
+      else setImgUrl(`https://${image}`);
     }
+    if (errorLabel || !imageHttps) setImgUrl("");
     setSocials((prevSocials) => ({ ...prevSocials, image }));
     setErrorLabels((prevErrorLabels) => ({
       ...prevErrorLabels,
@@ -280,10 +214,6 @@ export default function PayPopup(props: PayPopupProps) {
               eventEmitter.on(EVENT_NAME, handleEvent);
             });
 
-            const timeoutPromise: Promise<TxResult> = new Promise((resolve) =>
-              setTimeout(() => resolve("Timeout"), TX_TIMEOUT_MS)
-            );
-
             const txResult: TxResult = await Promise.race([
               anchorContext.createMetadataAccount(
                 //@ts-expect-error shut the fuck up
@@ -293,7 +223,6 @@ export default function PayPopup(props: PayPopupProps) {
                 id
               ),
               eventPromise,
-              timeoutPromise,
             ]);
             if (txResult === "Success") retryCount = 0;
             else if (txResult === "UserRejectedError")
@@ -348,41 +277,19 @@ export default function PayPopup(props: PayPopupProps) {
     setRetryCount(0);
   };
 
-  const TextField = (props: {
+  const textFields: {
     id: keyof Socials;
     type: HTMLInputTypeAttribute;
     validate: (value: string) => void;
-  }) => {
-    const { id: key, type, validate } = props;
-    return (
-      <div>
-        <label htmlFor={`${key}`}>
-          {`${capitalize(key)}${type === "url" ? " URL" : ""}`}
-          {` (optional)`}
-        </label>
-        <div>
-          {type === "url" && (
-            <label htmlFor={`${key}`} className="bg-slate-500">
-              https://
-            </label>
-          )}{" "}
-          <input
-            id={`${key}`}
-            type={type}
-            spellCheck="false"
-            placeholder={
-              type === "url"
-                ? `${DEFAULT_SOCIALS[key]?.replace("https://", "")}`
-                : `${DEFAULT_SOCIALS[key]}`
-            }
-            value={socials[key] || ""}
-            onChange={(event) => validate(event.target.value)}
-          ></input>
-        </div>
-        <label htmlFor={`${key}`}>{errorLabels[key]}</label>
-      </div>
-    );
-  };
+  }[] = [
+    { id: "name", type: "text", validate: validateName },
+    { id: "ticker", type: "text", validate: validateTicker },
+    { id: "website", type: "url", validate: validateWebsite },
+    { id: "twitter", type: "url", validate: validateTwitter },
+    { id: "community", type: "url", validate: validateCommunity },
+    { id: "description", type: "text", validate: validateDescription },
+    { id: "image", type: "url", validate: validateImage },
+  ];
 
   return (
     <>
@@ -395,33 +302,18 @@ export default function PayPopup(props: PayPopupProps) {
             X
           </button>
           <div>
-            {TextField({ id: "name", type: "text", validate: validateName })}
-            {TextField({
-              id: "ticker",
-              type: "text",
-              validate: validateTicker,
-            })}
-            {TextField({
-              id: "website",
-              type: "url",
-              validate: validateWebsite,
-            })}
-            {TextField({
-              id: "twitter",
-              type: "url",
-              validate: validateTwitter,
-            })}
-            {TextField({
-              id: "community",
-              type: "url",
-              validate: validateCommunity,
-            })}
-            {TextField({ id: "image", type: "url", validate: validateImage })}
-            {TextField({
-              id: "description",
-              type: "text",
-              validate: validateDescription,
-            })}
+            {textFields.map(({ id, type, validate }) =>
+              TextField({
+                id,
+                type,
+                validate,
+                value: socials[id],
+                error: errorLabels[id],
+              })
+            )}
+            <div className="max-w-24">
+              {imgUrl && <img src={imgUrl} alt="project-image"></img>}
+            </div>
             <div className="flex flex-col">
               <span id="character-count">
                 Character Count: {socialsSize}/{MAX_SOCIALS_SIZE}
@@ -436,7 +328,13 @@ export default function PayPopup(props: PayPopupProps) {
                 Please trim your socials!
               </label>
             </div>
-            {TextField({ id: "token", type: "text", validate: validateToken })}
+            {TextField({
+              id: "token",
+              type: "text",
+              validate: validateToken,
+              value: socials["token"],
+              error: errorLabels["token"],
+            })}
           </div>
           {isLoading ? (
             <div className="flex flex-col">
