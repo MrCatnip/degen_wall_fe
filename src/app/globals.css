@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --color-1: #243642;
-  --color-2: #387478;
-  --color-3: #629584;
-  --color-4: #e2f1e7;
   --background-color-primary: var(--color-1);
   --background-color-secondary: var(--color-2);
   --text-color-primary: var(--color-4);
@@ -56,6 +52,12 @@
   fill: var(--text-color-secondary) !important;
 }
 
+/* Switch styles */
+
+.MuiSwitch-thumb {
+  background-color: currentColor !important;
+}
+
 /* Theme styles allegedly */
 
 @media (prefers-color-scheme: dark) {
@@ -71,3 +73,5 @@ body {
     text-wrap: balance;
   }
 }
+
+@import "themes/theme1.css";
