@@ -9,11 +9,7 @@ import {
   Socials,
 } from "@/app/types";
 import { CanvasReadonly, CanvasEdit } from "./canvas-components";
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getDefaultCanvas,
   getUpdatedCanvas,
@@ -29,7 +25,9 @@ const CANVAS_DISPLAY_RATIO = 0.8;
 const SQUARE_MIN_SIZE = 8;
 
 export default function CanvasWrapper(
-  props: CanvasEditProps & { onSetSocials: (socials: Socials) => void }
+  props: CanvasEditProps & {
+    onSetSocials: (socials: Socials) => void;
+  }
 ) {
   const { onSetSocials, ...canvasEditProps } = props;
   const [canvasReadonly, setCanvasReadonly] = useState<CanvasLayout>(
@@ -90,10 +88,7 @@ export default function CanvasWrapper(
         {...canvasReadonlyProps}
         onSetSocials={onSetSocials}
       ></CanvasReadonly>
-      <CanvasEdit
-        {...canvasReadonlyProps}
-        {...canvasEditProps}
-      ></CanvasEdit>
+      <CanvasEdit {...canvasReadonlyProps} {...canvasEditProps}></CanvasEdit>
     </div>
   );
 }
