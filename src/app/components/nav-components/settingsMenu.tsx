@@ -79,8 +79,10 @@ export default function SettingsMenu() {
   }, [open]);
 
   return (
-    <div>
-      <button onClick={handleOpen} className="hover:animate-spin"><img src="settings.png" className="size-6"/></button>
+    <div className="flex align-middle">
+      <button onClick={handleOpen} className="hover:animate-spin">
+        <img src="settings.png" className="size-6" />
+      </button>
       <BackdropCommon open={open}>
         <div ref={menuRef} className="bg-black flex gap-2">
           <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
