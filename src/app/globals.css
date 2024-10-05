@@ -28,24 +28,32 @@
   color: var(--text-color-primary) !important;
 }
 
-.wallet-adapter-modal-button-close {
-  background-color: var(--interactive-elements-color) !important;
+.wallet-adapter-dropdown-list-item:hover,
+.wallet-adapter-button:hover {
+  background-color: var(--interactive-elements-hover-color) !important;
+  color: var(--text-color-secondary) !important;
+}
+
+.wallet-adapter-modal-title {
+  background-color: var(--background-color-primary) !important;
+  color: var(--text-color-primary) !important;
 }
 
 .wallet-adapter-modal-button-close svg {
   fill: var(--text-color-primary) !important;
 }
 
-.wallet-adapter-modal-button-close:hover svg {
-  fill: var(--text-color-secondary) !important;
+.wallet-adapter-modal-button-close {
+  background-color: var(--interactive-elements-color) !important;
+  transition: all 200ms ease;
 }
 
-
-.wallet-adapter-dropdown-list-item:hover,
-.wallet-adapter-button:hover,
-.wallet-adapter-modal-title {
+.wallet-adapter-modal-button-close:hover {
   background-color: var(--interactive-elements-hover-color) !important;
-  color: var(--text-color-secondary) !important;
+}
+
+.wallet-adapter-modal-button-close:hover svg {
+  fill: var(--text-color-secondary) !important;
 }
 
 /* Theme styles allegedly */
