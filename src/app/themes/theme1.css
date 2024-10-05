@@ -1,0 +1,6 @@
+html[data-theme="theme1"] {
+  --color-1: #243642;
+  --color-2: #387478;
+  --color-3: #629584;
+  --color-4: #e2f1e7;
+}

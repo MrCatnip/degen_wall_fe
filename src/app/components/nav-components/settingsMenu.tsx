@@ -2,6 +2,7 @@ import { BackdropCommon } from "@/app/common";
 import { RPC_URL_KEY } from "@/app/constants";
 import { ICON_SIZE, TOP_RIGHT_WIDTH } from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
+import { changeTheme } from "@/app/themes";
 import { Switch } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 
@@ -107,17 +108,20 @@ export default function SettingsMenu() {
       >
         <img src="settings.png" className="size-6" />
       </button>
+      <button onClick={() => changeTheme(1)}>changeTheme</button>
       <BackdropCommon open={open}>
         <div
           ref={menuRef}
-          className="bg-black flex flex-col gap-2 absolute mt-4"
+          className="bg-color-1 text-color-4 flex flex-col gap-2 absolute mt-1"
           style={{
             top: `${menuPosition.top}px`,
             left: `${menuPosition.left - TOP_RIGHT_WIDTH + ICON_SIZE}px`,
             width: `${TOP_RIGHT_WIDTH}px`,
           }}
         >
-          <div className="flex justify-end"><button onClick={save}>x</button></div>
+          <div className="flex justify-end">
+            <button onClick={save}>x</button>
+          </div>
           <div>
             <span>Use RPC</span>
             <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
