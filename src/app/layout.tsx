@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { WalletChangeProvider } from "./context/WalletChangeProvider";
 import { SelectTokenProvider } from "./context/SelectTokenProvider";
 import { TokenBalanceProvider } from "./context/TokenBalanceProvider";
 import { AnchorProvider } from "./context/AnchorProvider";
