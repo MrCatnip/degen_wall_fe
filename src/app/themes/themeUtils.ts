@@ -10,7 +10,6 @@ export const changeTheme = (index: number | string) => {
 
 export const setTheme = () => {
   const index = localStorage.getItem(THEME_KEY);
-  console.log(index);
   document
     .querySelector("html")
     ?.setAttribute("data-theme", `theme${index || DEFAULT_INDEX}`);
