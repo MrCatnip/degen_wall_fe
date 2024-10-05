@@ -32,6 +32,7 @@ import {
   PayButton,
   TextField,
 } from "./pay_popup-components";
+import { TOAST_LIFE_MS } from "@/app/constants-styles";
 
 const INVALID_URL_ERROR = "Invalid URL";
 const UNSUPPORTED_IMAGE_FORMAT_ERROR = "Unsupported Image Format!";
@@ -70,7 +71,7 @@ export default function PayPopup(props: PayPopupProps) {
       toast?.current?.show({
         severity: "error",
         detail: `Name can't be bigger than ${NAME_LENGTH}!`,
-        life: 3000,
+        life: TOAST_LIFE_MS,
       });
     } else {
       setSocials((prevSocials) => ({ ...prevSocials, name }));
@@ -82,7 +83,7 @@ export default function PayPopup(props: PayPopupProps) {
       toast?.current?.show({
         severity: "error",
         detail: `Ticker can't be bigger than ${TICKER_LENGTH}!`,
-        life: 3000,
+        life: TOAST_LIFE_MS,
       });
     } else {
       setSocials((prevSocials) => ({ ...prevSocials, ticker }));

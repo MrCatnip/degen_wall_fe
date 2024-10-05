@@ -7,6 +7,7 @@ import eventEmitter from "@/app/hooks/eventEmitter";
 import { EVENT_NAME } from "@/app/constantsUncircular";
 import { CircularProgress } from "@mui/material";
 import { MAX_SOCIALS_SIZE } from "@/app/constants";
+import { TOAST_LIFE_MS } from "@/app/constants-styles";
 
 const MAX_RETRY_ATTEMPTS = 3;
 
@@ -98,7 +99,7 @@ export default function PayButton(props: PayButtonProps) {
           severity: "success",
           summary: "Success!",
           detail: "That was a breeze, wasn't it?",
-          life: 3000,
+          life: TOAST_LIFE_MS,
         });
         exitEditMode();
         onClosePopupPay();
@@ -108,7 +109,7 @@ export default function PayButton(props: PayButtonProps) {
           severity: "error",
           summary: "Error!", //@ts-expect-error shut the fuck up!
           detail: error.message,
-          life: 3000,
+          life: TOAST_LIFE_MS,
         });
       }
     }
