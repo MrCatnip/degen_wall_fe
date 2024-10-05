@@ -1,4 +1,5 @@
 import { ConnectWalletButton } from "../common";
+import { TOP_RIGHT_WIDTH } from "../constants-styles";
 import { SettingsMenu } from "./nav-components";
 
 export default function Nav() {
@@ -13,7 +14,7 @@ export default function Nav() {
         </div>
       </div>
       <p>We are supposed to fill this void with something</p>
-      <div className="flex gap-4">
+      <div className="flex gap-4" style={{ width: TOP_RIGHT_WIDTH }}>
         <SettingsMenu></SettingsMenu>
         <ConnectWalletButton></ConnectWalletButton>
       </div>
