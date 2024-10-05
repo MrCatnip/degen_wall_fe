@@ -68,6 +68,21 @@
   background-color: var(--color-5);
 }
 
+.toast-success {
+  background-color: var(--color-2);
+  color: var(--text-color-primary);
+}
+
+.toast-error {
+  background-color: var(--color-3);
+  color: var(--text-color-primary);
+}
+
+.toast-warn {
+  background-color: var(--color-4);
+  color: var(--text-color-secondary);
+}
+
 @media (prefers-color-scheme: dark) {
 }
 

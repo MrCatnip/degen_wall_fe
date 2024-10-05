@@ -72,6 +72,7 @@ export default function PayPopup(props: PayPopupProps) {
         severity: "error",
         detail: `Name can't be bigger than ${NAME_LENGTH}!`,
         life: TOAST_LIFE_MS,
+        className: "toast-error",
       });
     } else {
       setSocials((prevSocials) => ({ ...prevSocials, name }));
@@ -84,6 +85,7 @@ export default function PayPopup(props: PayPopupProps) {
         severity: "error",
         detail: `Ticker can't be bigger than ${TICKER_LENGTH}!`,
         life: TOAST_LIFE_MS,
+        className: "toast-error",
       });
     } else {
       setSocials((prevSocials) => ({ ...prevSocials, ticker }));
@@ -243,7 +245,7 @@ export default function PayPopup(props: PayPopupProps) {
           <PayButton {...payButtonProps}></PayButton>
         </div>
       </BackdropCommon>
-      <Toast ref={toast}></Toast>
+      <Toast ref={toast} position="bottom-right"></Toast>
     </>
   );
 }

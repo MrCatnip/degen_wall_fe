@@ -75,6 +75,7 @@ export default function SettingsMenu() {
           summary: "Error!",
           detail: `Invalid RPC ${inputRef.current?.value}`,
           life: TOAST_LIFE_MS,
+          className: "toast-error",
         });
       } else {
         setIsValid(true);
@@ -84,6 +85,7 @@ export default function SettingsMenu() {
           summary: "Success!",
           detail: `Switched to RPC ${inputRef.current?.value}`,
           life: TOAST_LIFE_MS,
+          className: "toast-success",
         });
       }
       setIsLoading(false);
@@ -269,7 +271,7 @@ export default function SettingsMenu() {
           </div>
         </div>
       </BackdropCommon>
-      <Toast ref={toast}></Toast>
+      <Toast ref={toast} position="bottom-right"></Toast>
     </div>
   );
 }

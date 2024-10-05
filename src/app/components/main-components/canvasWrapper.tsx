@@ -20,6 +20,8 @@ import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 import { useConnection } from "@solana/wallet-adapter-react";
 import eventEmitter from "@/app/hooks/eventEmitter";
 import { EVENT_NAME } from "@/app/constantsUncircular";
+import { Toast } from "primereact/toast";
+import { TOAST_LIFE_MS } from "@/app/constants-styles";
 
 const CANVAS_DISPLAY_RATIO = 0.8;
 const SQUARE_MIN_SIZE = 8;
@@ -30,6 +32,7 @@ export default function CanvasWrapper(
   }
 ) {
   const { onSetSocials, ...canvasEditProps } = props;
+  const toast = useRef<Toast>(null);
   const [canvasReadonly, setCanvasReadonly] = useState<CanvasLayout>(
     getDefaultCanvas()
   );
@@ -74,7 +77,15 @@ export default function CanvasWrapper(
       const endpoint = localStorage.getItem(RPC_URL_KEY) || "";
       const initialCanvas = await initAndGetCanvas(endpoint);
       if (initialCanvas) setCanvasReadonly(initialCanvas);
-      else console.warn("Please use a valid RPC url for now");
+      else {
+        toast?.current?.show({
+          severity: "warn",
+          detail: `Couldn't fetch from server. Please use a valid RPC for now!`,
+          life: TOAST_LIFE_MS,
+          className: "toast-warn",
+        });
+        isInitialRender.current = true;
+      }
     };
 
     if (isInitialRender.current) {
@@ -89,6 +100,7 @@ export default function CanvasWrapper(
         onSetSocials={onSetSocials}
       ></CanvasReadonly>
       <CanvasEdit {...canvasReadonlyProps} {...canvasEditProps}></CanvasEdit>
+      <Toast ref={toast} position="bottom-right"></Toast>
     </div>
   );
 }

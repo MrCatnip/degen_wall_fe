@@ -100,6 +100,7 @@ export default function PayButton(props: PayButtonProps) {
           summary: "Success!",
           detail: "That was a breeze, wasn't it?",
           life: TOAST_LIFE_MS,
+          className: "toast-success",
         });
         exitEditMode();
         onClosePopupPay();
@@ -110,6 +111,7 @@ export default function PayButton(props: PayButtonProps) {
           summary: "Error!", //@ts-expect-error shut the fuck up!
           detail: error.message,
           life: TOAST_LIFE_MS,
+          className: "toast-error",
         });
       }
     }
