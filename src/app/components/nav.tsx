@@ -14,7 +14,7 @@ export default function Nav() {
         </div>
       </div>
       <p>We are supposed to fill this void with something</p>
-      <div className="flex gap-4" style={{ width: TOP_RIGHT_WIDTH }}>
+      <div className="flex gap-4" style={{ minWidth: TOP_RIGHT_WIDTH }}>
         <SettingsMenu></SettingsMenu>
         <ConnectWalletButton></ConnectWalletButton>
       </div>
