@@ -12,7 +12,9 @@ export default function Nav() {
           <span className="leading-10">DegenWall</span>
         </div>
       </div>
-      <p>We are supposed to fill this void with something</p>
+      <div className="py-2">
+        <p>We are supposed to fill this void with something</p>
+      </div>
       <div className="flex gap-4 min-w-60">
         <SettingsMenu></SettingsMenu>
         <ConnectWalletButton></ConnectWalletButton>
