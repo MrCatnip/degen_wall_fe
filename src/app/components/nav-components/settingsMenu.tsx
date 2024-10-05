@@ -1,5 +1,6 @@
 import { BackdropCommon } from "@/app/common";
 import { RPC_URL_KEY } from "@/app/constants";
+import { ICON_SIZE, TOP_RIGHT_WIDTH } from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
 import { Switch } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -7,6 +8,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 export default function SettingsMenu() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
+  const buttonRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const RPC_URL =
     typeof window !== "undefined"
@@ -15,8 +17,11 @@ export default function SettingsMenu() {
   const [isCustomRPC, setIsCustomRPC] = useState(RPC_URL ? true : false);
   const { setRPC } = useContext(RPCContext);
   const [inputValue, setInputValue] = useState(RPC_URL || "");
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
-  const handleOpen = () => {
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setMenuPosition({ top: rect.bottom, left: rect.left });
     setOpen(true);
   };
 
@@ -59,6 +64,21 @@ export default function SettingsMenu() {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      // Update menu position on window resize
+      if (open) {
+        //@ts-expect-error shut the fuck up
+        const rect = buttonRef.current.getBoundingClientRect();
+        setMenuPosition({ top: rect.bottom, left: rect.left });
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       //@ts-ignore
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -80,13 +100,28 @@ export default function SettingsMenu() {
 
   return (
     <div className="flex align-middle">
-      <button onClick={handleOpen} className="hover:animate-spin">
+      <button
+        onClick={handleOpen}
+        className="hover:animate-spin"
+        ref={buttonRef}
+      >
         <img src="settings.png" className="size-6" />
       </button>
       <BackdropCommon open={open}>
-        <div ref={menuRef} className="bg-black flex gap-2">
-          <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
-          <span>RPC URL</span>
+        <div
+          ref={menuRef}
+          className="bg-black flex flex-col gap-2 absolute mt-4"
+          style={{
+            top: `${menuPosition.top}px`,
+            left: `${menuPosition.left - TOP_RIGHT_WIDTH + ICON_SIZE}px`,
+            width: `${TOP_RIGHT_WIDTH}px`,
+          }}
+        >
+          <div className="flex justify-end"><button onClick={save}>x</button></div>
+          <div>
+            <span>Use RPC</span>
+            <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
+          </div>
           <input
             ref={inputRef}
             disabled={!isCustomRPC}
@@ -95,7 +130,6 @@ export default function SettingsMenu() {
             value={inputValue}
             onChange={handleInputChange}
           ></input>
-          <button onClick={save}>Save</button>
         </div>
       </BackdropCommon>
     </div>
