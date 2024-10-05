@@ -100,7 +100,14 @@ export default function CanvasReadonly(
   };
 
   const handleMouseLeave = () => {
-    setHoveredSquare(null);
+    setHoveredSquare((prevSquare) => ({
+      x: -1,
+      y: -1,
+      color: "black",
+      prevSquare: prevSquare
+        ? { x: prevSquare.x, y: prevSquare.y, color: prevSquare.color }
+        : undefined,
+    }));
   };
 
   return (
