@@ -80,7 +80,7 @@ export default function SettingsMenu() {
 
   return (
     <div>
-      <button onClick={handleOpen}>Settings</button>
+      <button onClick={handleOpen} className="hover:animate-spin"><img src="settings.png" className="size-6"/></button>
       <BackdropCommon open={open}>
         <div ref={menuRef} className="bg-black flex gap-2">
           <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
