@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { SelectTokenProvider } from "./context/SelectTokenProvider";
 import { TokenBalanceProvider } from "./context/TokenBalanceProvider";
 import { AnchorProvider } from "./context/AnchorProvider";
 import RPCProvider from "./context/RPCProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const space_grotesk = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,15 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" data-theme="theme1">
+      <body className={space_grotesk.className}>
         {
           <RPCProvider>
-                <AnchorProvider>
-                  <SelectTokenProvider>
-                    <TokenBalanceProvider>{children}</TokenBalanceProvider>
-                  </SelectTokenProvider>
-                </AnchorProvider>
+            <AnchorProvider>
+              <SelectTokenProvider>
+                <TokenBalanceProvider>{children}</TokenBalanceProvider>
+              </SelectTokenProvider>
+            </AnchorProvider>
           </RPCProvider>
         }
       </body>

@@ -1,10 +1,12 @@
 import { BackdropCommon } from "@/app/common";
 import { RPC_URL_KEY } from "@/app/constants";
-import { ICON_SIZE, TOP_RIGHT_WIDTH } from "@/app/constants-styles";
+import { ICON_SIZE, SETTINGS_MENU_WIDTH } from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
 import { changeTheme } from "@/app/themes";
 import { Switch } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
+import XIcon from "./xIcon";
+import { ThemeButton, ThemeButtonProps } from "@/app/types";
 
 export default function SettingsMenu() {
   const [open, setOpen] = useState(false);
@@ -99,6 +101,20 @@ export default function SettingsMenu() {
     };
   }, [open]);
 
+  const themes = [
+    { id: 1, color: "#243642" },
+    { id: 2, color: "#f1f1f2" },
+    { id: 3, color: "#ff6f61" },
+  ];
+
+  const ThemeButton: React.FC<ThemeButtonProps> = ({ theme, onChange }) => (
+    <button
+      onClick={() => onChange(theme.id)}
+      className="rounded-full"
+      style={{ backgroundColor: theme.color, width: ICON_SIZE, height: ICON_SIZE }}
+    />
+  );
+
   return (
     <div className="flex align-middle">
       <button
@@ -108,32 +124,78 @@ export default function SettingsMenu() {
       >
         <img src="settings.png" className="size-6" />
       </button>
-      <button onClick={() => changeTheme(1)}>changeTheme</button>
       <BackdropCommon open={open}>
         <div
           ref={menuRef}
-          className="bg-color-1 text-color-4 flex flex-col gap-2 absolute mt-1"
+          className="bg-color-2 text-color-4 flex flex-col gap-2 absolute mt-1 p-6 rounded-lg"
           style={{
             top: `${menuPosition.top}px`,
-            left: `${menuPosition.left - TOP_RIGHT_WIDTH + ICON_SIZE}px`,
-            width: `${TOP_RIGHT_WIDTH}px`,
+            left: `${menuPosition.left - SETTINGS_MENU_WIDTH + ICON_SIZE}px`,
+            width: `${SETTINGS_MENU_WIDTH}px`,
           }}
         >
-          <div className="flex justify-end">
-            <button onClick={save}>x</button>
+          <div className="flex justify-between">
+            <h3 className="text-xl line font-semibold">Settings</h3>
+            <button onClick={save} className="mr-2">
+              <XIcon color="var(--color-4)" />
+            </button>
           </div>
-          <div>
-            <span>Use RPC</span>
-            <Switch checked={isCustomRPC} onChange={toggleSwitch}></Switch>
+          <div className="flex flex-col mt-4 gap-2">
+            <div className="flex justify-between">
+              <div>
+                <p className="my-1.75">Use RPC</p>
+              </div>
+              <Switch
+                checked={isCustomRPC}
+                onChange={toggleSwitch}
+                sx={{
+                  "& .MuiSwitch-switchBase": {
+                    "&.Mui-checked": {
+                      color: "var(--color-5)",
+                      "& + .MuiSwitch-track": {
+                        backgroundColor: "var(--color-1)",
+                      },
+                      "&.Mui-disabled + .MuiSwitch-track": {},
+                    },
+                    "&.Mui-focusVisible .MuiSwitch-thumb": {},
+                    "&.Mui-disabled .MuiSwitch-thumb": {},
+                    "&.Mui-disabled + .MuiSwitch-track": {},
+                  },
+                  "& .MuiSwitch-thumb": {},
+                  "& .MuiSwitch-track": {
+                    backgroundColor: "var(--color-4)",
+                  },
+                }}
+              ></Switch>
+            </div>
+            <input
+              ref={inputRef}
+              disabled={!isCustomRPC}
+              type="url"
+              style={{
+                backgroundColor: `var(--color-${isCustomRPC ? "4" : "1"})`,
+                outline: `${isCustomRPC ? "solid var(--color-1)" : "unset"}`,
+                color: `var(--color-${isCustomRPC ? "1" : "4"})`,
+              }}
+              className="px-3 py-1 rounded-xl"
+              value={inputValue}
+              onChange={handleInputChange}
+            ></input>
           </div>
-          <input
-            ref={inputRef}
-            disabled={!isCustomRPC}
-            type="url"
-            className="text-black"
-            value={inputValue}
-            onChange={handleInputChange}
-          ></input>
+          <div className="flex justify-between mt-4">
+            <div>
+              <p>Color Theme</p>
+            </div>
+            <div className="flex gap-1">
+              {themes.map((theme) => (
+                <ThemeButton
+                  key={theme.id}
+                  theme={theme}
+                  onChange={changeTheme}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </BackdropCommon>
     </div>

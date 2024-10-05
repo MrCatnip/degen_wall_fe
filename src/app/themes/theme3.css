@@ -1,0 +1,7 @@
+html[data-theme="theme3"] {
+  --color-1: #ff6f61; /* Warm Coral */
+  --color-2: #f7cac9; /* Pale Pink */
+  --color-3: #92a8d1; /* Soft Blue */
+  --color-4: #034f84; /* Deep Ocean Blue */
+  --color-5: #d5e1df; /* Light Seafoam */
+}

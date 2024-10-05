@@ -253,3 +253,13 @@ export type ErrorTypes =
   | "UserRejectedError";
 
 export type TxResult = ErrorTypes;
+
+export interface ThemeButton {
+  id: number;
+  color: string;
+}
+
+export interface ThemeButtonProps {
+  theme: ThemeButton;
+  onChange: (id: number) => void;
+}

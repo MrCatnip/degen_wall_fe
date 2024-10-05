@@ -1,1 +1,1 @@
-export { changeTheme, setTheme } from "./themeUtils";
+export { changeTheme, setTheme, muiTheme } from "./themeUtils";

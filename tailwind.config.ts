@@ -22,6 +22,9 @@ const config: Config = {
       padding: {
         "1.5": "0.375rem",
       },
+      margin: {
+        "1.75": "7px",
+      },
     },
   },
   plugins: [],
