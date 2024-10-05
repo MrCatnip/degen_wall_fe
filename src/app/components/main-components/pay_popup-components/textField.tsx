@@ -14,7 +14,7 @@ export default function TextField(props: {
 }) {
   const { id: key, type, value, error, validate } = props;
   return (
-    <div>
+    <div key={key}>
       <label htmlFor={`${key}`}>
         {`${capitalize(key)}${type === "url" ? " URL" : ""}`}
         {` (optional)`}
