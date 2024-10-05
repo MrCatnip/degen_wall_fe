@@ -19,9 +19,7 @@ export const TOKEN_DICT = {
     address: GOLD_ADDRESS,
     vaultWsol: new PublicKey("58DmxrkK8KTJkDhcG4oDVQ7Li7yfbpNikhtsiLD53KTD"),
     vaultMint: new PublicKey("6jBwx67VgAFPBTrGKnTmE2SVKzXgWJ2sAP25ks2YZUE1"),
-    treasuryMint: new PublicKey(
-      "CeqkbDdECYJZ86K4qJndBxNQD85tFj498XYY5UyxPuQp"
-    ),
+    treasuryMint: new PublicKey("CeqkbDdECYJZ86K4qJndBxNQD85tFj498XYY5UyxPuQp"),
   },
 };
 export const FETCH_BALANCE_INTERVAL_MS = 20000;
