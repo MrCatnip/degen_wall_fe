@@ -3,37 +3,59 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  --elements-interactive-color: #2081e2; /* Primary Blue */
-  --elements-hover-color: #1868b7; /* Dark Blue */
-  --background-secondary-color: #e5e8eb; /* Gray */
-  --text-color: #333333; /* Dark Gray */
-  --background-primary-White: #ffffff; /* White */
+  --color-1: #243642;
+  --color-2: #387478;
+  --color-3: #629584;
+  --color-4: #e2f1e7;
+  --background-color-primary: var(--color-1);
+  --background-color-secondary: var(--color-2);
+  --text-color-primary: var(--color-4);
+  --text-color-secondary: var(--color-1);
+  --interactive-elements-color: var(--color-3);
+  --interactive-elements-hover-color: var(--color-4);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+/* Wallet styles */
 
 .wallet-adapter-button {
   height: 40px !important;
   line-height: 40px !important;
+}
+
+.wallet-adapter-dropdown-list,
+.wallet-adapter-button {
+  background-color: var(--interactive-elements-color) !important;
+  color: var(--text-color-primary) !important;
+}
+
+.wallet-adapter-modal-button-close {
+  background-color: var(--interactive-elements-color) !important;
+}
+
+.wallet-adapter-modal-button-close svg {
+  fill: var(--text-color-primary) !important;
+}
+
+.wallet-adapter-modal-button-close:hover svg {
+  fill: var(--text-color-secondary) !important;
+}
+
+
+.wallet-adapter-dropdown-list-item:hover,
+.wallet-adapter-button:hover,
+.wallet-adapter-modal-title {
+  background-color: var(--interactive-elements-hover-color) !important;
+  color: var(--text-color-secondary) !important;
+}
+
+/* Theme styles allegedly */
+
+@media (prefers-color-scheme: dark) {
+}
+
+body {
+  color: var(--text-color-primary);
+  background-color: var(--background-color-primary);
 }
 
 @layer utilities {
