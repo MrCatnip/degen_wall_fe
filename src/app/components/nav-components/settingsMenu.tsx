@@ -4,6 +4,7 @@ import {
   ICON_SIZE,
   SETTINGS_MENU_WIDTH,
   TOAST_LIFE_MS,
+  WALLET_CONTAINER_HEIGHT,
 } from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
 import { changeTheme } from "@/app/themes";
@@ -166,14 +167,24 @@ export default function SettingsMenu() {
   const defaultOutline = "solid var(--color-1)";
 
   return (
-    <div className="flex align-middle">
+    <div
+      style={{
+        marginTop: `${(WALLET_CONTAINER_HEIGHT - ICON_SIZE) / 2}px`,
+        marginBottom: `${(WALLET_CONTAINER_HEIGHT - ICON_SIZE) / 2}px`,
+        width: ICON_SIZE,
+        height: ICON_SIZE,
+      }}
+      className="settings-button-wrapper rounded-xl"
+    >
       <button
         onClick={handleOpen}
         className="hover:animate-spin"
         ref={buttonRef}
+        style={{ width: ICON_SIZE, height: ICON_SIZE }}
       >
-        <img src="settings.png" className="size-6" />
+        <img src="settings.png" />
       </button>
+
       <BackdropCommon open={open}>
         <div
           ref={menuRef}

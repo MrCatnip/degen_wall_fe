@@ -15,7 +15,7 @@ export default function Nav() {
       <div className="py-2">
         <p>We are supposed to fill this void with something</p>
       </div>
-      <div className="flex gap-4 min-w-60">
+      <div className="flex gap-4 min-w-60 align-middle">
         <SettingsMenu></SettingsMenu>
         <ConnectWalletButton></ConnectWalletButton>
       </div>

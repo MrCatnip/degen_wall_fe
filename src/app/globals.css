@@ -9,13 +9,15 @@
   --text-color-secondary: var(--color-1);
   --interactive-elements-color: var(--color-3);
   --interactive-elements-hover-color: var(--color-4);
+  --filler-color: var(--color-5);
 }
 
 /* Wallet styles */
 
-.wallet-adapter-button {
-  height: 40px !important;
-  line-height: 40px !important;
+.wallet-adapter-button,
+.wallet-adapter-dropdown {
+  height: var(--wallet-button-height) !important;
+  line-height: var(--wallet-button-height) !important;
 }
 
 .wallet-adapter-dropdown-list,
@@ -69,18 +71,22 @@
 }
 
 .toast-success {
-  background-color: var(--color-2);
+  background-color: var(--background-color-secondary);
   color: var(--text-color-primary);
 }
 
 .toast-error {
-  background-color: var(--color-3);
+  background-color: var(--interactive-elements-color);
   color: var(--text-color-primary);
 }
 
 .toast-warn {
-  background-color: var(--color-4);
+  background-color: var(--interactive-elements-hover-color);
   color: var(--text-color-secondary);
+}
+
+.settings-button-wrapper:hover {
+  background-color: var(--interactive-elements-hover-color);
 }
 
 @media (prefers-color-scheme: dark) {
