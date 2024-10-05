@@ -26,6 +26,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.wallet-adapter-button {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
