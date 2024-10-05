@@ -1,5 +1,5 @@
 import { BackdropCommon } from "@/app/common";
-import { RPC_URL_KEY } from "@/app/constants";
+import { RPC_URL_KEY, SUGGESTED_RPC } from "@/app/constants";
 import { ICON_SIZE, SETTINGS_MENU_WIDTH } from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
 import { changeTheme } from "@/app/themes";
@@ -111,7 +111,11 @@ export default function SettingsMenu() {
     <button
       onClick={() => onChange(theme.id)}
       className="rounded-full"
-      style={{ backgroundColor: theme.color, width: ICON_SIZE, height: ICON_SIZE }}
+      style={{
+        backgroundColor: theme.color,
+        width: ICON_SIZE,
+        height: ICON_SIZE,
+      }}
     />
   );
 
@@ -180,6 +184,7 @@ export default function SettingsMenu() {
               className="px-3 py-1 rounded-xl"
               value={inputValue}
               onChange={handleInputChange}
+              placeholder={`${SUGGESTED_RPC}`}
             ></input>
           </div>
           <div className="flex justify-between mt-4">
