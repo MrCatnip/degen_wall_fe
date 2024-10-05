@@ -1,14 +1,22 @@
 import { BackdropCommon } from "@/app/common";
 import { RPC_URL_KEY, SUGGESTED_RPC } from "@/app/constants";
-import { ICON_SIZE, SETTINGS_MENU_WIDTH } from "@/app/constants-styles";
+import {
+  ICON_SIZE,
+  SETTINGS_MENU_WIDTH,
+  TOAST_LIFE_MS,
+} from "@/app/constants-styles";
 import { RPCContext } from "@/app/context/RPCProvider";
 import { changeTheme } from "@/app/themes";
-import { Switch } from "@mui/material";
-import { useContext, useEffect, useRef, useState } from "react";
+import { CircularProgress, Switch } from "@mui/material";
+import { CSSProperties, useContext, useEffect, useRef, useState } from "react";
 import XIcon from "./xIcon";
 import { ThemeButtonProps } from "@/app/types";
+import { Toast } from "primereact/toast";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function SettingsMenu() {
+  const toast = useRef<Toast>(null);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -21,6 +29,9 @@ export default function SettingsMenu() {
   const { setRPC } = useContext(RPCContext);
   const [inputValue, setInputValue] = useState(RPC_URL || "");
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -45,25 +56,46 @@ export default function SettingsMenu() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPending(true);
     setInputValue(e.target.value);
   };
 
-  const save = async () => {
-    if (isCustomRPC && inputRef.current?.value) {
-      setOpen(false);
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter" && inputRef.current?.value) {
+      setIsPending(false);
+      setIsLoading(true);
       const everythingsAllright = await setRPC(inputRef.current?.value);
       if (!everythingsAllright) {
-        setInputValue("");
-        toggleSwitch();
+        setIsValid(false);
         localStorage.setItem(RPC_URL_KEY, "");
-      } else localStorage.setItem(RPC_URL_KEY, inputRef.current?.value);
-      return;
+        toast?.current?.show({
+          severity: "error",
+          summary: "Error!",
+          detail: `Invalid RPC ${inputRef.current?.value}`,
+          life: TOAST_LIFE_MS,
+        });
+      } else {
+        setIsValid(true);
+        localStorage.setItem(RPC_URL_KEY, inputRef.current?.value);
+        toast?.current?.show({
+          severity: "success",
+          summary: "Success!",
+          detail: `Switched to RPC ${inputRef.current?.value}`,
+          life: TOAST_LIFE_MS,
+        });
+      }
+      setIsLoading(false);
     }
-    setRPC();
-    setInputValue("");
-    localStorage.setItem(RPC_URL_KEY, "");
+  };
+
+  const save = async () => {
     setOpen(false);
-    if (isCustomRPC) toggleSwitch();
+    if (!RPC_URL && isCustomRPC) {
+      setInputValue("");
+      toggleSwitch();
+    }
   };
 
   useEffect(() => {
@@ -119,6 +151,18 @@ export default function SettingsMenu() {
     />
   );
 
+  const rpc_hint_style = (display: boolean): CSSProperties => ({
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    color: "var(--color-1)",
+    marginTop: 4,
+    marginBottom: 4,
+    fontSize: ICON_SIZE,
+    display: display ? "block" : "none",
+  });
+
+  const defaultOutline = "solid var(--color-1)";
+
   return (
     <div className="flex align-middle">
       <button
@@ -172,20 +216,42 @@ export default function SettingsMenu() {
                 }}
               ></Switch>
             </div>
-            <input
-              ref={inputRef}
-              disabled={!isCustomRPC}
-              type="url"
-              style={{
-                backgroundColor: `var(--color-${isCustomRPC ? "4" : "1"})`,
-                outline: `${isCustomRPC ? "solid var(--color-1)" : "unset"}`,
-                color: `var(--color-${isCustomRPC ? "1" : "4"})`,
-              }}
-              className="px-3 py-1 rounded-xl"
-              value={inputValue}
-              onChange={handleInputChange}
-              placeholder={`${SUGGESTED_RPC}`}
-            ></input>
+            <div className="flex relative">
+              <input
+                ref={inputRef}
+                disabled={!isCustomRPC}
+                type="url"
+                style={{
+                  backgroundColor: `var(--color-${isCustomRPC ? "4" : "1"})`,
+                  outline: `${isCustomRPC ? `${defaultOutline}` : "unset"}`,
+                  color: `var(--color-${isCustomRPC ? "1" : "4"})`,
+                }}
+                className="px-3 py-1 rounded-xl w-full"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                placeholder={`${SUGGESTED_RPC}`}
+              ></input>
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  width: ICON_SIZE * 1.5,
+                  paddingRight: ICON_SIZE * 0.25,
+                  paddingLeft: ICON_SIZE * 0.25,
+                  height: "100%",
+                  backgroundColor: `var(--color-${isCustomRPC ? "4" : "1"})`,
+                  color: `var(--color-${isCustomRPC ? "1" : "4"})`,
+                  zIndex: 12000,
+                  display: !isPending ? "block" : "none",
+                }}
+                className="rounded-xl"
+              >
+                <CircularProgress style={rpc_hint_style(isLoading)} />
+                <CheckIcon style={rpc_hint_style(!isPending && isValid)} />
+                <CloseIcon style={rpc_hint_style(!isPending && !isValid)} />
+              </div>
+            </div>
           </div>
           <div className="flex justify-between mt-4">
             <div>
@@ -203,6 +269,7 @@ export default function SettingsMenu() {
           </div>
         </div>
       </BackdropCommon>
+      <Toast ref={toast}></Toast>
     </div>
   );
 }
