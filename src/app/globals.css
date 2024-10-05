@@ -6,6 +6,11 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --elements-interactive-color: #2081e2; /* Primary Blue */
+  --elements-hover-color: #1868b7; /* Dark Blue */
+  --background-secondary-color: #e5e8eb; /* Gray */
+  --text-color: #333333; /* Dark Gray */
+  --background-primary-White: #ffffff; /* White */
 }
 
 @media (prefers-color-scheme: dark) {
