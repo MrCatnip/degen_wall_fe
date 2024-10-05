@@ -23,8 +23,7 @@ const DEFAULLT_PAYER = "DEGenPMwjmLCw9LmdvfCUK5M4XKrbep2rts4DDqG3J5x";
 const DEFAULT_WEBSITE = "https://degen_wall.com";
 const DEFAULT_TWITTER = "https://x.com/degen_wall";
 const DEFAULT_COMMUNITY = "https://t.me/degen_wall";
-const DEFAULT_IMAGE =
-  "https://i.ibb.co/ABC/1500x500.jpg";
+const DEFAULT_IMAGE = "https://i.ibb.co/ABC/1500x500.jpg";
 const DEFAULT_NAME = "Degen Wall";
 const DEFAULT_TICKER = "DEV";
 const DEFAULT_DESCRIPTION = "Put your pixels on display dawg";
@@ -34,7 +33,7 @@ const CANVAS_SIZE = PX_WIDTH * PX_HEIGHT;
 
 const IMAGE_REGEX = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
 
-let canvas: CanvasLayout = [];
+let canvas: CanvasLayout | false = [];
 let isColoredPixel = Array(CANVAS_SIZE).fill(false);
 
 export const getDefaultCanvas = (): CanvasLayout => {
@@ -143,7 +142,8 @@ const parseSocials = (socials: Socials) => {
 const fetchLatestCanvas = async () => {
   const response = await fetch(SERVER_URL);
   if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
+    console.error(response.status);
+    return false;
   }
   const canvas = (await response.json()) as CanvasLayout;
   return canvas;
@@ -240,7 +240,7 @@ export const getEmptyCanvas = () => {
 
 export const initAndGetCanvas = async (
   endpoint?: string
-): Promise<CanvasLayout | null> => {
+): Promise<CanvasLayout | false | null> => {
   try {
     if (endpoint && (await isHealthyEndpoint(endpoint))) {
       return await getLatestCanvas(endpoint);
