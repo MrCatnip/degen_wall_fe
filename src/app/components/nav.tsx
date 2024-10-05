@@ -16,10 +16,10 @@ export default function Nav() {
           <span className="leading-10">DegenWall</span>
         </div>
       </div>
+      <SettingsMenu></SettingsMenu>
       <ConnectWalletButton></ConnectWalletButton>
       <SelectTokenDropdown></SelectTokenDropdown>
       <TokenBalanceDisplay></TokenBalanceDisplay>
-      <SettingsMenu></SettingsMenu>
     </nav>
   );
 }
