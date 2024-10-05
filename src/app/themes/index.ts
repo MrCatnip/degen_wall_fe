@@ -1,1 +1,1 @@
-export { default as changeTheme } from "./changeTheme";
+export { changeTheme, setTheme } from "./themeUtils";
