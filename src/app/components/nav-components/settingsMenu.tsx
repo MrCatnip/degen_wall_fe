@@ -6,7 +6,7 @@ import { changeTheme } from "@/app/themes";
 import { Switch } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import XIcon from "./xIcon";
-import { ThemeButton, ThemeButtonProps } from "@/app/types";
+import { ThemeButtonProps } from "@/app/types";
 
 export default function SettingsMenu() {
   const [open, setOpen] = useState(false);
