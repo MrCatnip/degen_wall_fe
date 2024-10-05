@@ -1,13 +1,9 @@
-import {
-  ConnectWalletButton,
-  SelectTokenDropdown,
-  TokenBalanceDisplay,
-} from "../common";
+import { ConnectWalletButton } from "../common";
 import { SettingsMenu } from "./nav-components";
 
 export default function Nav() {
   return (
-    <nav className="flex gap-4">
+    <nav className="flex justify-between px-8 py-1.5">
       <div className="flex align-middle">
         <div>
           <img src="GOLD.png" alt="degenwall-logo" className="size-10"></img>
@@ -16,10 +12,11 @@ export default function Nav() {
           <span className="leading-10">DegenWall</span>
         </div>
       </div>
-      <SettingsMenu></SettingsMenu>
-      <ConnectWalletButton></ConnectWalletButton>
-      <SelectTokenDropdown></SelectTokenDropdown>
-      <TokenBalanceDisplay></TokenBalanceDisplay>
+      <p>We are supposed to fill this void with something</p>
+      <div className="flex gap-4">
+        <SettingsMenu></SettingsMenu>
+        <ConnectWalletButton></ConnectWalletButton>
+      </div>
     </nav>
   );
 }
