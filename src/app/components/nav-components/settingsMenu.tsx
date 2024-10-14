@@ -10,7 +10,7 @@ import { RPCContext } from "@/app/context/RPCProvider";
 import { changeTheme } from "@/app/themes";
 import { CircularProgress, Switch } from "@mui/material";
 import { CSSProperties, useContext, useEffect, useRef, useState } from "react";
-import XIcon from "./xIcon";
+import XIcon from "@/app/common/xIcon";
 import { ThemeButtonProps } from "@/app/types";
 import { Toast } from "primereact/toast";
 import CheckIcon from "@mui/icons-material/Check";
