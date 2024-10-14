@@ -95,6 +95,11 @@
   height: 32px;
 }
 
+.button-icon {
+  width: 24px;
+  height: 24px;
+}
+
 .menu-button {
   padding: 4px;
   border-radius: 100%;

@@ -34,7 +34,11 @@ export default function MenuSection(props: MenuSectionProps) {
 
   return (
     <div id="menu" className="flex justify-between mt-2">
-      <div id="menu-leftside" className="flex gap-2">
+      <div
+        id="menu-leftside"
+        className="flex gap-2 p-1"
+        style={{ backgroundColor: "var(--color-5)" }}
+      >
         <button
           className={
             "menu-button" + (disablePencil ? " menu-button-disabled" : "")
@@ -42,7 +46,12 @@ export default function MenuSection(props: MenuSectionProps) {
           disabled={disablePencil}
           onClick={enterEditMode}
         >
-          <img src="./pencil.png" alt="degen-pencil" draggable="false" />
+          <img
+            className="button-icon"
+            src="./pencil.png"
+            alt="degen-pencil"
+            draggable="false"
+          />
         </button>
         <div
           className="border-white border-2 rounded-full overflow-hidden menu-button color-picker"
@@ -66,7 +75,12 @@ export default function MenuSection(props: MenuSectionProps) {
           style={{ display: isEditMode ? "inline" : "none" }}
           onClick={enableEraseMode}
         >
-          <img src="./eraser.png" alt="degen-eraser" draggable="false" />
+          <img
+            className="button-icon"
+            src="./eraser.png"
+            alt="degen-eraser"
+            draggable="false"
+          />
         </button>
         <button
           className={
@@ -76,7 +90,12 @@ export default function MenuSection(props: MenuSectionProps) {
           style={{ display: isEditMode ? "inline" : "none" }}
           onClick={onOpenPopupUpload}
         >
-          <img src="./upload.png" alt="degen-upload" draggable="false" />
+          <img
+            className="button-icon"
+            src="./upload.png"
+            alt="degen-upload"
+            draggable="false"
+          />
         </button>
         <button
           className={
@@ -86,7 +105,12 @@ export default function MenuSection(props: MenuSectionProps) {
           style={{ display: isEditMode ? "inline" : "none" }}
           onClick={() => onSetActionStamped(Action.Undo)}
         >
-          <img src="./undo.png" alt="degen-undo" draggable="false" />
+          <img
+            className="button-icon"
+            src="./undo.png"
+            alt="degen-undo"
+            draggable="false"
+          />
         </button>
         <button
           className={
@@ -96,7 +120,12 @@ export default function MenuSection(props: MenuSectionProps) {
           style={{ display: isEditMode ? "inline" : "none" }}
           onClick={() => onSetActionStamped(Action.Redo)}
         >
-          <img src="./redo.png" alt="degen-redo" draggable="false" />
+          <img
+            className="button-icon"
+            src="./redo.png"
+            alt="degen-redo"
+            draggable="false"
+          />
         </button>
         <button
           className={
@@ -106,7 +135,12 @@ export default function MenuSection(props: MenuSectionProps) {
           style={{ display: isEditMode ? "inline" : "none" }}
           onClick={exitEditMode}
         >
-          <img src="./exit.png" alt="degen-exit" draggable="false" />
+          <img
+            className="button-icon"
+            src="./exit.png"
+            alt="degen-exit"
+            draggable="false"
+          />
         </button>
       </div>
       <div id="menu-rightside">
