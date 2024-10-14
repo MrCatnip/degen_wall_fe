@@ -130,7 +130,7 @@ export default function UploadPopup(props: UploadPopupProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popupUpload, onClosePopupUpload]);
-  console.log(errorMessage);
+
   const saveButtonDisabled = (!pixelArray.length || errorMessage) as boolean;
 
   return (
