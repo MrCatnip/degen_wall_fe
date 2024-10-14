@@ -1,4 +1,5 @@
 import { BackdropCommon } from "@/app/common";
+import XIcon from "@/app/common/xIcon";
 import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
 import { PixelArray, UploadPopupProps } from "@/app/types";
 import { useRef, useEffect, useState } from "react";
@@ -130,19 +131,37 @@ export default function UploadPopup(props: UploadPopupProps) {
     };
   }, [popupUpload, onClosePopupUpload]);
 
+  const saveButtonDisabled = !pixelArray.length;
+
   return (
     <BackdropCommon open={popupUpload}>
-      <div ref={menuRef} className="bg-black">
+      <div
+        ref={menuRef}
+        className="bg-color-2 text-color-4 flex flex-col gap-4 p-6"
+      >
+        <div className="flex justify-between">
+          <h3 className="text-xl font-semibold">Upload</h3>
+          <button onClick={onClosePopupUpload} className="mr-2">
+            <XIcon color="var(--color-4)" />
+          </button>
+        </div>
         <input
           ref={fileInputRef}
           type="file"
           accept="image/*"
           onChange={handleImageChange}
         />
-        <button disabled={!pixelArray.length} onClick={handleSave}>
+        <canvas ref={canvasRef} onDragStart={(e) => e.preventDefault()} />
+        <button
+          className={
+            "common-button" +
+            (saveButtonDisabled ? " common-button-disabled" : "")
+          }
+          disabled={saveButtonDisabled}
+          onClick={handleSave}
+        >
           Save
         </button>
-        <canvas ref={canvasRef} onDragStart={(e) => e.preventDefault()} />
         <span
           id="error-message"
           style={{ display: errorMessage ? "inline" : "none" }}

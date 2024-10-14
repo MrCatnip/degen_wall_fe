@@ -147,7 +147,7 @@ export default function MenuSection(props: MenuSectionProps) {
         disabled={!coloredPixelsCount}
         style={{ display: coloredPixelsCount ? "inline" : "none" }}
         onClick={handleOpenPopupPay}
-        className="pay-button"
+        className="common-button"
       >
         <span>
           Pay
