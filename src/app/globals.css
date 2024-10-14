@@ -64,6 +64,23 @@
   background-color: currentColor !important;
 }
 
+/* Dropdown styles */
+
+.p-dropdown-label {
+  background-color: var(--color-5);
+  color: var(--text-color-secondary);
+}
+
+.p-dropdown-item {
+  background-color: var(--interactive-elements-color);
+  color: var(--text-color-primary) !important;
+}
+
+.p-dropdown-item:hover {
+  background-color: var(--interactive-elements-hover-color);
+  color: var(--text-color-secondary) !important;
+}
+
 /* Misc */
 
 .x-icon:hover {
