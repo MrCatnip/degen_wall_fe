@@ -89,9 +89,13 @@
   background-color: var(--interactive-elements-hover-color);
 }
 
-.menu-button {
+.menu-button,
+.p-colorpicker-preview {
   width: 32px;
   height: 32px;
+}
+
+.menu-button {
   padding: 4px;
   border-radius: 100%;
 }
@@ -106,6 +110,10 @@
 
 .color-picker {
   padding: 0px !important;
+}
+
+.color-picker:hover {
+  background-color: var(--color-2) !important;
 }
 
 @media (prefers-color-scheme: dark) {
