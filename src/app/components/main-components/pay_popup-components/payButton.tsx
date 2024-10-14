@@ -20,6 +20,7 @@ export default function PayButton(props: PayButtonProps) {
     onClosePopupPay,
     socialsSize,
     socials,
+    errorsExist,
   } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [chunk, setChunk] = useState({ length: 0, count: 0 });
@@ -120,7 +121,9 @@ export default function PayButton(props: PayButtonProps) {
   };
 
   const payButtonDisabled =
-    !(anchorContext && wallet?.publicKey) || socialsSize > MAX_SOCIALS_SIZE;
+    !(anchorContext && wallet?.publicKey) ||
+    socialsSize > MAX_SOCIALS_SIZE ||
+    errorsExist;
 
   return isLoading ? (
     <div className="flex flex-col">

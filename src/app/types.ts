@@ -213,6 +213,7 @@ export type PayButtonProps = {
   onClosePopupPay: () => void;
   socialsSize: number;
   socials: Socials;
+  errorsExist: boolean;
 };
 
 export type AccountStruct =

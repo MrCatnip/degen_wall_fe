@@ -188,6 +188,8 @@ export default function PayPopup(props: PayPopupProps) {
     { id: "image", type: "url", validate: validateImage },
   ];
 
+  const errorsExist = Object.values(errorLabels).some((value) => value);
+
   const payButtonProps: PayButtonProps = {
     token: selectTokenContext.token,
     coloredPixelsDict,
@@ -196,6 +198,7 @@ export default function PayPopup(props: PayPopupProps) {
     onClosePopupPay,
     socialsSize,
     socials,
+    errorsExist,
   };
 
   return (
