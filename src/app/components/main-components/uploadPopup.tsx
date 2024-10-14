@@ -137,7 +137,7 @@ export default function UploadPopup(props: UploadPopupProps) {
     <BackdropCommon open={popupUpload}>
       <div
         ref={menuRef}
-        className="bg-color-2 text-color-4 flex flex-col gap-4 p-6"
+        className="bg-color-2 text-color-4 flex flex-col gap-4 p-6 rounded-lg"
       >
         <div className="flex justify-between">
           <h3 className="text-xl font-semibold">Upload</h3>

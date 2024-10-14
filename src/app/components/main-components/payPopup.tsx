@@ -201,7 +201,10 @@ export default function PayPopup(props: PayPopupProps) {
   return (
     <>
       <BackdropCommon open={popupPay}>
-        <div ref={menuRef} className="relative bg-color-2 text-color-4 p-6 flex flex-col gap-2">
+        <div
+          ref={menuRef}
+          className="relative bg-color-2 text-color-4 p-6 flex flex-col gap-2 rounded-lg"
+        >
           <div className="flex justify-between mb-6">
             <h3 className="text-xl font-semibold">Project Info</h3>
             <button onClick={onClosePopupPay}>
@@ -211,8 +214,8 @@ export default function PayPopup(props: PayPopupProps) {
           <div className="flex gap-2">
             <ConnectWalletButton></ConnectWalletButton>
             <div className="flex flex-col">
-            <SelectTokenDropdown></SelectTokenDropdown>
-            <TokenBalanceDisplay></TokenBalanceDisplay>
+              <SelectTokenDropdown></SelectTokenDropdown>
+              <TokenBalanceDisplay></TokenBalanceDisplay>
             </div>
           </div>
           <div className="flex flex-col gap-2">
