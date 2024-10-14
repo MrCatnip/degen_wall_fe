@@ -135,9 +135,11 @@ export default function PayButton(props: PayButtonProps) {
           Awaiting tx {chunk.count}/{chunk.length}
         </span>
       </div>
-      <span style={{ visibility: retryCount ? "visible" : "hidden" }}>
-        Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
-      </span>
+      <div className="flex justify-center">
+        <span style={{ visibility: retryCount ? "visible" : "hidden" }}>
+          Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
+        </span>
+      </div>
     </div>
   ) : (
     <button
