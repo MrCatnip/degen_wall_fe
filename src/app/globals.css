@@ -100,12 +100,21 @@
   border-radius: 100%;
 }
 
+.menu-button-disabled {
+  opacity: 0.5;
+}
+
+.menu-button-disabled,
 .menu-button:hover {
   background-color: var(--color-2);
 }
 
 .menu-button:active {
   padding: 5px 3px 3px 5px;
+}
+
+.menu-button-disabled:active {
+  padding: 4px !important;
 }
 
 .color-picker {
