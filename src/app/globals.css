@@ -151,6 +151,16 @@
   color: var(--text-color-primary) !important;
 }
 
+input[type="text"] {
+  color: var(--text-color-secondary);
+  background-color: var(--color-4);
+}
+
+input[type="url"] {
+  color: var(--text-color-primary);
+  background-color: var(--color-1);
+}
+
 @media (prefers-color-scheme: dark) {
 }
 
