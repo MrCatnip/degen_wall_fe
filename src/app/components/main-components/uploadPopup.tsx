@@ -52,11 +52,6 @@ export default function UploadPopup(props: UploadPopupProps) {
         img.onload = () => {
           try {
             const { width, height } = img;
-            if (width > PX_WIDTH || height > PX_HEIGHT) {
-              throw new Error(
-                `Image dimensions should not exceed ${PX_WIDTH} in width and ${PX_HEIGHT} in height.`
-              );
-            }
             const canvas = canvasRef.current;
             if (!canvas) return;
             canvas.width = width;
@@ -94,6 +89,11 @@ export default function UploadPopup(props: UploadPopupProps) {
               setPixelArray(pixelArray);
             }
             URL.revokeObjectURL(img.src);
+            if (width > PX_WIDTH || height > PX_HEIGHT) {
+              throw new Error(
+                `Image dimensions should not exceed ${PX_WIDTH}px in width and ${PX_HEIGHT}px in height.`
+              );
+            }
           } catch (error) {
             //@ts-expect-error fk this shit
             if (error?.message)
@@ -130,8 +130,8 @@ export default function UploadPopup(props: UploadPopupProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popupUpload, onClosePopupUpload]);
-
-  const saveButtonDisabled = !pixelArray.length;
+  console.log(errorMessage);
+  const saveButtonDisabled = (!pixelArray.length || errorMessage) as boolean;
 
   return (
     <BackdropCommon open={popupUpload}>
@@ -146,12 +146,17 @@ export default function UploadPopup(props: UploadPopupProps) {
           </button>
         </div>
         <input
+          className="common-button"
           ref={fileInputRef}
           type="file"
           accept="image/*"
           onChange={handleImageChange}
         />
-        <canvas ref={canvasRef} onDragStart={(e) => e.preventDefault()} />
+        <canvas
+          ref={canvasRef}
+          onDragStart={(e) => e.preventDefault()}
+          style={{ maxWidth: `${PX_WIDTH}px`, maxHeight: `${PX_HEIGHT}px` }}
+        />
         <button
           className={
             "common-button" +
