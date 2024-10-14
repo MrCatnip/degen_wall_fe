@@ -118,6 +118,10 @@ export default function PayButton(props: PayButtonProps) {
     setIsLoading(false);
     setRetryCount(0);
   };
+
+  const payButtonDisabled =
+    !(anchorContext && wallet?.publicKey) || socialsSize > MAX_SOCIALS_SIZE;
+
   return isLoading ? (
     <div className="flex flex-col">
       <CircularProgress />
@@ -131,8 +135,9 @@ export default function PayButton(props: PayButtonProps) {
   ) : (
     <button
       onClick={onPay}
-      disabled={
-        !(anchorContext && wallet?.publicKey) || socialsSize > MAX_SOCIALS_SIZE
+      disabled={payButtonDisabled}
+      className={
+        "common-button" + (payButtonDisabled ? " common-button-disabled" : "")
       }
     >
       Pay
