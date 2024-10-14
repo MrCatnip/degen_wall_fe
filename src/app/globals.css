@@ -100,6 +100,14 @@
   background-color: var(--color-2);
 }
 
+.menu-button:active {
+  padding: 5px 3px 3px 5px;
+}
+
+.color-picker {
+  padding: 0px !important;
+}
+
 @media (prefers-color-scheme: dark) {
 }
 

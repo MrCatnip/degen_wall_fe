@@ -36,8 +36,11 @@ export default function MenuSection(props: MenuSectionProps) {
           <img src="./pencil.png" alt="degen-pencil" draggable="false" />
         </button>
         <div
-          className="border-white border-2 rounded-full overflow-hidden menu-button"
-          style={{ opacity: isEditMode ? 1 : 0 }}
+          className="w-8 h-8 border-white border-2 rounded-full overflow-hidden menu-button color-picker"
+          style={{
+            opacity: isEditMode ? 1 : 0,
+            backgroundColor: drawColor,
+          }}
         >
           <ColorPicker
             format="hex"
