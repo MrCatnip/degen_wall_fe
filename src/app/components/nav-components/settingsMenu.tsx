@@ -182,7 +182,7 @@ export default function SettingsMenu() {
         ref={buttonRef}
         style={{ width: ICON_SIZE, height: ICON_SIZE }}
       >
-        <img src="settings.png" />
+        <img src="settings.png" alt="degen-settings" draggable="false" />
       </button>
 
       <BackdropCommon open={open}>

@@ -6,7 +6,12 @@ export default function Nav() {
     <nav className="flex justify-between px-8 py-1.5">
       <div className="flex align-middle">
         <div>
-          <img src="GOLD.png" alt="degenwall-logo" className="size-10"></img>
+          <img
+            src="GOLD.png"
+            alt="degenwall-logo"
+            className="size-10"
+            draggable="false"
+          ></img>
         </div>
         <div>
           <span className="leading-10">DegenWall</span>

@@ -28,11 +28,15 @@ export default function MenuSection(props: MenuSectionProps) {
   return (
     <div id="menu" className="flex justify-between mt-2">
       <div id="menu-leftside" className="flex gap-2">
-        <button disabled={isEditMode && !isEraseMode} onClick={enterEditMode}>
-          Pencil
+        <button
+          className="menu-button rounded-full"
+          disabled={isEditMode && !isEraseMode}
+          onClick={enterEditMode}
+        >
+          <img src="./pencil.png" alt="degen-pencil" draggable="false" />
         </button>
         <div
-          className="w-6 h-6 border-white border-2 rounded-full overflow-hidden"
+          className="border-white border-2 rounded-full overflow-hidden menu-button"
           style={{ opacity: isEditMode ? 1 : 0 }}
         >
           <ColorPicker
@@ -43,39 +47,44 @@ export default function MenuSection(props: MenuSectionProps) {
           />
         </div>
         <button
+          className="menu-button"
           disabled={!isEditMode || isEraseMode}
           style={{ opacity: isEditMode ? 1 : 0 }}
           onClick={enableEraseMode}
         >
-          Erase
+          <img src="./eraser.png" alt="degen-eraser" draggable="false" />
         </button>
         <button
+          className="menu-button"
           disabled={!isEditMode}
           style={{ opacity: isEditMode ? 1 : 0 }}
           onClick={onOpenPopupUpload}
         >
-          Upload
+          <img src="./upload.png" alt="degen-upload" draggable="false" />
         </button>
         <button
+          className="menu-button"
           disabled={!isEditMode || !undoCount}
           style={{ opacity: isEditMode ? 1 : 0 }}
           onClick={() => onSetActionStamped(Action.Undo)}
         >
-          Undo
+          <img src="./undo.png" alt="degen-undo" draggable="false" />
         </button>
         <button
+          className="menu-button"
           disabled={!isEditMode || !redoCount}
           style={{ opacity: isEditMode ? 1 : 0 }}
           onClick={() => onSetActionStamped(Action.Redo)}
         >
-          Redo
+          <img src="./redo.png" alt="degen-redo" draggable="false" />
         </button>
         <button
+          className="menu-button"
           disabled={!isEditMode}
           style={{ opacity: isEditMode ? 1 : 0 }}
           onClick={exitEditMode}
         >
-          Exit
+          <img src="./exit.png" alt="degen-exit" draggable="false" />
         </button>
       </div>
       <div id="menu-rightside">
