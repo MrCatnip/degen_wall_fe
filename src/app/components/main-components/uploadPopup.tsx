@@ -140,7 +140,7 @@ export default function UploadPopup(props: UploadPopupProps) {
         className="bg-color-2 text-color-4 flex flex-col gap-4 p-6 rounded-lg"
       >
         <div className="flex justify-between">
-          <h3 className="text-xl font-semibold">Upload</h3>
+          <h3 className="text-xl font-semibold">Upload Image</h3>
           <button onClick={onClosePopupUpload} className="mr-2">
             <XIcon color="var(--color-4)" />
           </button>
