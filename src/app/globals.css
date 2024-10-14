@@ -21,13 +21,15 @@
 }
 
 .wallet-adapter-dropdown-list,
-.wallet-adapter-button {
+.wallet-adapter-button,
+.pay-button {
   background-color: var(--interactive-elements-color) !important;
   color: var(--text-color-primary) !important;
 }
 
 .wallet-adapter-dropdown-list-item:hover,
-.wallet-adapter-button:hover {
+.wallet-adapter-button:hover,
+.pay-button:hover {
   background-color: var(--interactive-elements-hover-color) !important;
   color: var(--text-color-secondary) !important;
 }
@@ -128,6 +130,11 @@
 
 .color-picker:hover {
   background-color: var(--color-2) !important;
+}
+
+.pay-button {
+  padding: 4px;
+  border-radius: 4px;
 }
 
 @media (prefers-color-scheme: dark) {

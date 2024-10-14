@@ -33,7 +33,7 @@ export default function MenuSection(props: MenuSectionProps) {
   const disableExit = !isEditMode;
 
   return (
-    <div id="menu" className="flex justify-between mt-2">
+    <div id="menu" className="flex justify-between mt-2 font-bold">
       <div
         id="menu-leftside"
         className="flex gap-2 p-1 rounded-xl"
@@ -143,31 +143,17 @@ export default function MenuSection(props: MenuSectionProps) {
           />
         </button>
       </div>
-      <div
-        id="menu-rightside"
-        className="rounded-xl"
-        style={{ backgroundColor: "var(--color-4)" }}
+      <button
+        disabled={!coloredPixelsCount}
+        style={{ display: coloredPixelsCount ? "inline" : "none" }}
+        onClick={handleOpenPopupPay}
+        className="pay-button"
       >
-        <button
-          disabled={!coloredPixelsCount}
-          style={{ display: coloredPixelsCount ? "inline" : "none" }}
-          onClick={handleOpenPopupPay}
-        >
+        <span>
           Pay
-        </button>
-        <span
-          style={{
-            color:
-              coloredPixelsCount === 0
-                ? "white"
-                : coloredPixelsCount <= MAX_PX_NR
-                ? "green"
-                : "red",
-          }}
-        >
-          {coloredPixelsCount > 0 && `${coloredPixelsCount}/${MAX_PX_NR} PX`}
+          {coloredPixelsCount > 0 && ` ${coloredPixelsCount}/${MAX_PX_NR} PX`}
         </span>
-      </div>
+      </button>
     </div>
   );
 }
