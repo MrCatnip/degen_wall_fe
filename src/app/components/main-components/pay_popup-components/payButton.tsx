@@ -127,10 +127,14 @@ export default function PayButton(props: PayButtonProps) {
 
   return isLoading ? (
     <div className="flex flex-col">
-      <CircularProgress />
-      <span>
-        {chunk.count}/{chunk.length}
-      </span>
+      <div className="flex justify-center">
+        <CircularProgress sx={{ color: "var(--color-4)" }} />
+      </div>
+      <div className="flex justify-center">
+        <span>
+          Awaiting tx {chunk.count}/{chunk.length}
+        </span>
+      </div>
       <span style={{ visibility: retryCount ? "visible" : "hidden" }}>
         Retrying {retryCount}/{MAX_RETRY_ATTEMPTS}
       </span>
