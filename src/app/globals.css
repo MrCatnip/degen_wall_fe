@@ -69,6 +69,7 @@
 .p-dropdown-label {
   background-color: var(--color-5);
   color: var(--text-color-secondary);
+  width: 110px !important;
 }
 
 .p-dropdown-item {
