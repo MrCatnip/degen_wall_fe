@@ -179,7 +179,7 @@ export default function Main() {
 
   return (
     <main className="flex">
-      <div id="menu-canvas-wrapper" className="inline-block">
+      <div id="menu-canvas-wrapper" className="flex flex-col gap-2 ml-4">
         <MenuSection {...menuSectionProps}></MenuSection>
         <CanvasWrapper
           {...canvasEditProps}
