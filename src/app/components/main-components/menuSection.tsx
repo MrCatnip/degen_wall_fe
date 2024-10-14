@@ -36,8 +36,8 @@ export default function MenuSection(props: MenuSectionProps) {
     <div id="menu" className="flex justify-between mt-2">
       <div
         id="menu-leftside"
-        className="flex gap-2 p-1"
-        style={{ backgroundColor: "var(--color-5)" }}
+        className="flex gap-2 p-1 rounded-xl"
+        style={{ backgroundColor: "var(--color-4)" }}
       >
         <button
           className={
@@ -143,7 +143,11 @@ export default function MenuSection(props: MenuSectionProps) {
           />
         </button>
       </div>
-      <div id="menu-rightside">
+      <div
+        id="menu-rightside"
+        className="rounded-xl"
+        style={{ backgroundColor: "var(--color-4)" }}
+      >
         <button
           disabled={!coloredPixelsCount}
           style={{ display: coloredPixelsCount ? "inline" : "none" }}
