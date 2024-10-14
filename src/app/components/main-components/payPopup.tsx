@@ -33,6 +33,7 @@ import {
   TextField,
 } from "./pay_popup-components";
 import { TOAST_LIFE_MS } from "@/app/constants-styles";
+import XIcon from "@/app/common/xIcon";
 
 const INVALID_URL_ERROR = "Invalid URL";
 const UNSUPPORTED_IMAGE_FORMAT_ERROR = "Unsupported Image Format!";
@@ -70,7 +71,7 @@ export default function PayPopup(props: PayPopupProps) {
     if (name.length > NAME_LENGTH) {
       toast?.current?.show({
         severity: "error",
-        detail: `Name can't be bigger than ${NAME_LENGTH}!`,
+        detail: `Name can't be bigger than ${NAME_LENGTH} characters!`,
         life: TOAST_LIFE_MS,
         className: "toast-error",
       });
@@ -83,7 +84,7 @@ export default function PayPopup(props: PayPopupProps) {
     if (ticker.length > TICKER_LENGTH) {
       toast?.current?.show({
         severity: "error",
-        detail: `Ticker can't be bigger than ${TICKER_LENGTH}!`,
+        detail: `Ticker can't be bigger than ${TICKER_LENGTH} characters!`,
         life: TOAST_LIFE_MS,
         className: "toast-error",
       });
@@ -200,14 +201,21 @@ export default function PayPopup(props: PayPopupProps) {
   return (
     <>
       <BackdropCommon open={popupPay}>
-        <div ref={menuRef} className="bg-green-100 text-black relative">
-          <ConnectWalletButton></ConnectWalletButton>
-          <TokenBalanceDisplay></TokenBalanceDisplay>
-          <SelectTokenDropdown></SelectTokenDropdown>
-          <button className="absolute top-0 right-0" onClick={onClosePopupPay}>
-            X
-          </button>
-          <div>
+        <div ref={menuRef} className="relative bg-color-2 text-color-4 p-6 flex flex-col gap-2">
+          <div className="flex justify-between mb-6">
+            <h3 className="text-xl font-semibold">Project Info</h3>
+            <button onClick={onClosePopupPay}>
+              <XIcon></XIcon>
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <ConnectWalletButton></ConnectWalletButton>
+            <div className="flex flex-col">
+            <SelectTokenDropdown></SelectTokenDropdown>
+            <TokenBalanceDisplay></TokenBalanceDisplay>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
             {textFields.map(({ id, type, validate }) =>
               TextField({
                 id,
