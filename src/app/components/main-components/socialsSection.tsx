@@ -22,11 +22,14 @@ export default function SocialsSection(
   const isAboutSectionVisible =
     description || website || twitter || community || token;
 
-  const isSocialsTabVisible =
-    (isHeaderVisible || isAboutSectionVisible) && !isEditMode;
+  const isSocialsTabVisible = isHeaderVisible || isAboutSectionVisible;
 
   return (
-    <div id="socials-tab" className="flex flex-col bg-color-2 p-6">
+    <div
+      id="socials-tab"
+      className="flex flex-col bg-color-2 p-6"
+      style={{ display: isEditMode ? "none" : "flex" }}
+    >
       {isSocialsTabVisible ? (
         <>
           <div
