@@ -181,12 +181,14 @@ export default function Main() {
     <main className="flex">
       <div id="menu-canvas-wrapper" className="flex flex-col gap-2 ml-4">
         <MenuSection {...menuSectionProps}></MenuSection>
-        <CanvasWrapper
-          {...canvasEditProps}
-          onSetSocials={onSetSocials}
-        ></CanvasWrapper>
+        <div className="flex">
+          <CanvasWrapper
+            {...canvasEditProps}
+            onSetSocials={onSetSocials}
+          ></CanvasWrapper>
+          <SocialsSection {...socials} isEditMode={isEditMode}></SocialsSection>
+        </div>
       </div>
-      <SocialsSection {...socials} isEditMode={isEditMode}></SocialsSection>
       <UploadPopup {...uploadPopupProps}></UploadPopup>
       <PayPopup {...payPopupProps}></PayPopup>
     </main>
