@@ -27,7 +27,7 @@ const config: Config = {
         "1.75": "7px",
       },
       width: {
-        "4/10": "40%",
+        "3/10": "30%",
       },
     },
     screens: {
