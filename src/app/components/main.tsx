@@ -181,7 +181,7 @@ export default function Main() {
     <main className="flex">
       <div id="menu-canvas-wrapper" className="flex flex-col gap-2 ml-4">
         <MenuSection {...menuSectionProps}></MenuSection>
-        <div className="flex">
+        <div className="flex lg:flex-col">
           <CanvasWrapper
             {...canvasEditProps}
             onSetSocials={onSetSocials}

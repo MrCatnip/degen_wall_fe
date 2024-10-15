@@ -21,9 +21,13 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import eventEmitter from "@/app/hooks/eventEmitter";
 import { EVENT_NAME } from "@/app/constantsUncircular";
 import { Toast } from "primereact/toast";
-import { CANVAS_DISPLAY_RATIO, TOAST_LIFE_MS } from "@/app/constants-styles";
+import {
+  CANVAS_DISPLAY_RATIO,
+  LG_WIDTH,
+  TOAST_LIFE_MS,
+} from "@/app/constants-styles";
 
-const SQUARE_MIN_SIZE = 8;
+const SQUARE_MIN_SIZE = 4;
 
 export default function CanvasWrapper(
   props: CanvasEditProps & {
@@ -40,16 +44,18 @@ export default function CanvasWrapper(
   const { height, width } = useWindowDimensions();
   const [squareSize, setSquareSize] = useState(SQUARE_MIN_SIZE);
 
+  const ACTUAL_DISPLAY_RATIO = width <= LG_WIDTH ? 0.95 : CANVAS_DISPLAY_RATIO;
+
   useEffect(() => {
     const newSquareSize = Math.max(
       SQUARE_MIN_SIZE,
       Math.min(
-        Math.floor((width * CANVAS_DISPLAY_RATIO) / PX_WIDTH),
-        Math.floor((height * CANVAS_DISPLAY_RATIO) / PX_HEIGHT)
+        Math.floor((width * ACTUAL_DISPLAY_RATIO) / PX_WIDTH),
+        Math.floor((height * ACTUAL_DISPLAY_RATIO) / PX_HEIGHT)
       )
     );
     setSquareSize(newSquareSize);
-  }, [width, height]);
+  }, [width, height, ACTUAL_DISPLAY_RATIO]);
 
   const canvasReadonlyProps: CanvasReadonlyProps = {
     squareSize,
