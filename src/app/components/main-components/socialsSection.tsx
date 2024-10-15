@@ -59,7 +59,7 @@ export default function SocialsSection(
                 aspectRatio: "1 / 1",
               }}
             >
-              <img src={image} alt="image" className="max-w-32"></img>
+              <img src={image} alt="image" className="max-w-full"></img>
             </div>
           </div>
           <div
