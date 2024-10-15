@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { CANVAS_DISPLAY_RATIO } from "@/app/constants-styles";
+import { CANVAS_DISPLAY_RATIO, LG_WIDTH } from "@/app/constants-styles";
 import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 import { Socials } from "@/app/types";
 
@@ -29,7 +29,10 @@ export default function SocialsSection(
 
   const { height, width } = useWindowDimensions();
 
-  const socialsSectionWidth = Math.floor((1 - CANVAS_DISPLAY_RATIO) * width);
+  const socialsSectionWidth =
+    width <= LG_WIDTH
+      ? "100%"
+      : `${Math.floor((1 - CANVAS_DISPLAY_RATIO) * width)}px`;
 
   return (
     <div
@@ -37,7 +40,7 @@ export default function SocialsSection(
       className="flex flex-col bg-color-2 p-6 gap-2"
       style={{
         display: isEditMode ? "none" : "flex",
-        width: `${socialsSectionWidth}px`,
+        width: `${socialsSectionWidth}`,
         height: `100%`,
       }}
     >
@@ -51,7 +54,7 @@ export default function SocialsSection(
               style={{
                 display: name || ticker ? "block" : "none",
               }}
-              className="font-semibold text-xl"
+              className="font-semibold text-xl lg:text-center"
             >
               {name}
               <a
@@ -68,11 +71,12 @@ export default function SocialsSection(
                 display: image ? "inline-block" : "none",
                 maxWidth: "80%",
               }}
+              className="lg:mx-auto"
             >
-              <img src={image} alt="image" className="max-w-full"></img>
+              <img src={image} alt="image" className="max-w-full lg:mx-auto"></img>
             </div>
-            <h3 className="font-semibold text-xl">About</h3>
-            <p style={{ display: description ? "block" : "none" }}>
+            <h3 className="font-semibold text-xl lg:text-center">About</h3>
+            <p style={{ display: description ? "block" : "none" }} className="lg:text-center">
               {description}
             </p>
           </div>

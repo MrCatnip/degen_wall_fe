@@ -24,10 +24,9 @@ import { Toast } from "primereact/toast";
 import {
   CANVAS_DISPLAY_RATIO,
   LG_WIDTH,
+  SQUARE_MIN_SIZE,
   TOAST_LIFE_MS,
 } from "@/app/constants-styles";
-
-const SQUARE_MIN_SIZE = 4;
 
 export default function CanvasWrapper(
   props: CanvasEditProps & {
