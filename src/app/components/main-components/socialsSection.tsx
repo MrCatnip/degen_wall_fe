@@ -67,7 +67,6 @@ export default function SocialsSection(
               style={{
                 display: image ? "inline-block" : "none",
                 maxWidth: "80%",
-                aspectRatio: "1 / 1",
               }}
             >
               <img src={image} alt="image" className="max-w-full"></img>
