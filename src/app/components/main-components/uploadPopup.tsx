@@ -33,7 +33,6 @@ const getSizeRatio = (pixelArray: PixelArray, popupMaxSize: number) => {
       ? pixelArrayHeightRatio
       : pixelArrayHeightRatio;
 
-  console.log(widthRatio, heightRatio);
   return Math.min(widthRatio, heightRatio);
 };
 
