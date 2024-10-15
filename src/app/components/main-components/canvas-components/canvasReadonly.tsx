@@ -3,7 +3,9 @@
 import { CanvasReadonlyProps, Socials } from "@/app/types";
 import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
 import { useEffect, useRef, useState } from "react";
-import { drawPixel, invertColor } from "./canvas-util";
+import { drawPixel, getDefaultSocials, invertColor } from "./canvas-util";
+import SocialsSection from "../socialsSection";
+import { BackdropCommon } from "@/app/common";
 
 export default function CanvasReadonly(
   props: CanvasReadonlyProps & { onSetSocials: (socials: Socials) => void }
@@ -15,6 +17,9 @@ export default function CanvasReadonly(
     onSetSocials,
   } = props;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [socials, setSocials] = useState(getDefaultSocials());
   const [hoveredSquare, setHoveredSquare] = useState<{
     x: number;
     y: number;
@@ -110,6 +115,41 @@ export default function CanvasReadonly(
     }));
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((event.clientX - rect.left) / squareSize);
+    const y = Math.floor((event.clientY - rect.top) / squareSize);
+
+    if (x >= 0 && x < PX_WIDTH && y >= 0 && y < PX_HEIGHT) {
+      // Do something with the clicked square (e.g., log, update state, etc.)
+      setSocials(canvasLayout[x + y * PX_WIDTH].socials);
+      setOpen(true);
+    }
+  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        socialsRef.current &&
+        !socialsRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
+  const socialsSectionProps = { ...socials, isEditMode: false };
+
   return (
     <div
       id="canvas-view"
@@ -124,7 +164,13 @@ export default function CanvasReadonly(
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
       />
+      <BackdropCommon open={open}>
+        <div ref={socialsRef}>
+          <SocialsSection {...socialsSectionProps}></SocialsSection>
+        </div>
+      </BackdropCommon>
     </div>
   );
 }
