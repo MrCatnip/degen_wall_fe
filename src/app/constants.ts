@@ -23,11 +23,12 @@ export const TOKEN_DICT = {
   },
 };
 export const FETCH_BALANCE_INTERVAL_MS = 20000;
-export const SERVER_URL = "http://localhost:3001";
+export const SERVER_URL = "https://degenwallbe-production.up.railway.app/";
 export const RPC_URL_KEY = "RPC_URL";
 export const ERASE_PIXELS_CODE = -1;
 export const USER_REGEX = /^[a-zA-Z0-9_]{1,15}$/;
-export const SUGGESTED_RPC = "https://burned-ancient-sky.solana-mainnet.quiknode.pro/d49a357af5b7e930daca5717f381642387bd42ca"
+export const SUGGESTED_RPC =
+  "https://burned-ancient-sky.solana-mainnet.quiknode.pro/d49a357af5b7e930daca5717f381642387bd42ca";
 // we're using a class because for some reason we need to instantiate a wallet with connection
 // if we want to have access to the IDL constants
 const anchorInterface = new AnchorInterface(null as unknown as Connection);
