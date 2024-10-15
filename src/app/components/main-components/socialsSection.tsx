@@ -73,10 +73,17 @@ export default function SocialsSection(
               }}
               className="lg:mx-auto"
             >
-              <img src={image} alt="image" className="max-w-full lg:mx-auto"></img>
+              <img
+                src={image}
+                alt="image"
+                className="max-w-full lg:mx-auto"
+              ></img>
             </div>
             <h3 className="font-semibold text-xl lg:text-center">About</h3>
-            <p style={{ display: description ? "block" : "none" }} className="lg:text-center">
+            <p
+              style={{ display: description ? "block" : "none" }}
+              className="lg:text-center"
+            >
               {description}
             </p>
           </div>
@@ -84,41 +91,40 @@ export default function SocialsSection(
             style={{ display: isLinkSectionVisible ? "flex" : "none" }}
             className="flex-col gap-2"
           >
-            <button
-              className="common-button"
-              style={{ display: website ? "block" : "none" }}
-            >
-              <a href={`${website}`} target="_blank">
+            <a href={`${website}`} target="_blank">
+              <button
+                className="common-button w-full"
+                style={{ display: website ? "block" : "none" }}
+              >
                 Website
-              </a>
-            </button>
-            <button
-              className="common-button"
-              style={{ display: twitter ? "block" : "none" }}
-            >
-              <a href={`${twitter}`} target="_blank">
+              </button>
+            </a>
+
+            <a href={`${twitter}`} target="_blank">
+              <button
+                className="common-button w-full"
+                style={{ display: twitter ? "block" : "none" }}
+              >
                 Twitter
-              </a>
-            </button>
-            <button
-              className="common-button"
-              style={{ display: community ? "block" : "none" }}
-            >
-              <a href={`${community}`} target="_blank">
+              </button>
+            </a>
+
+            <a href={`${community}`} target="_blank">
+              <button
+                className="common-button w-full"
+                style={{ display: community ? "block" : "none" }}
+              >
                 Community
-              </a>
-            </button>
-            <button
-              className="common-button"
-              style={{ display: token ? "block" : "none" }}
-            >
-              <a
-                href={`https://dexscreener.com/solana/${token}`}
-                target="_blank"
+              </button>
+            </a>
+            <a href={`https://dexscreener.com/solana/${token}`} target="_blank">
+              <button
+                className="common-button w-full"
+                style={{ display: token ? "block" : "none" }}
               >
                 Dexscreener
-              </a>
-            </button>
+              </button>
+            </a>
           </div>
         </>
       ) : (
