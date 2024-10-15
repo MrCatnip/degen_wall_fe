@@ -148,7 +148,7 @@ export default function CanvasReadonly(
     };
   }, [open]);
 
-  const socialsSectionProps = { ...socials, isEditMode: false };
+  const socialsSectionProps = { ...socials, isEditMode: false, isPopup: true };
 
   return (
     <div

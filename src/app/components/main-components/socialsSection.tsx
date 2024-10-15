@@ -4,7 +4,7 @@ import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 import { Socials } from "@/app/types";
 
 export default function SocialsSection(
-  props: Socials & { isEditMode: boolean }
+  props: Socials & { isEditMode: boolean; isPopup?: boolean }
 ) {
   const {
     payer,
@@ -17,14 +17,15 @@ export default function SocialsSection(
     community,
     token,
     isEditMode,
+    isPopup,
   } = props;
 
-  const isHeaderVisible = name || ticker || image;
+  const isHeaderVisible = name || ticker || image || description;
 
-  const isAboutSectionVisible =
-    description || website || twitter || community || token;
+  const isLinkSectionVisible =
+    isPopup && (website || twitter || community || token);
 
-  const isSocialsTabVisible = isHeaderVisible || isAboutSectionVisible;
+  const isSocialsTabVisible = isHeaderVisible || isLinkSectionVisible;
 
   const { height, width } = useWindowDimensions();
 
@@ -33,7 +34,7 @@ export default function SocialsSection(
   return (
     <div
       id="socials-tab"
-      className="flex flex-col bg-color-2 p-6"
+      className="flex flex-col bg-color-2 p-6 gap-2"
       style={{
         display: isEditMode ? "none" : "flex",
         width: `${socialsSectionWidth}px`,
@@ -71,15 +72,15 @@ export default function SocialsSection(
             >
               <img src={image} alt="image" className="max-w-full"></img>
             </div>
-          </div>
-          <div
-            style={{ display: isAboutSectionVisible ? "flex" : "none" }}
-            className="flex-col gap-2"
-          >
             <h3 className="font-semibold text-xl">About</h3>
             <p style={{ display: description ? "block" : "none" }}>
               {description}
             </p>
+          </div>
+          <div
+            style={{ display: isLinkSectionVisible ? "flex" : "none" }}
+            className="flex-col gap-2"
+          >
             <button
               className="common-button"
               style={{ display: website ? "block" : "none" }}
