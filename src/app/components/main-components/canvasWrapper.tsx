@@ -21,9 +21,8 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import eventEmitter from "@/app/hooks/eventEmitter";
 import { EVENT_NAME } from "@/app/constantsUncircular";
 import { Toast } from "primereact/toast";
-import { TOAST_LIFE_MS } from "@/app/constants-styles";
+import { CANVAS_DISPLAY_RATIO, TOAST_LIFE_MS } from "@/app/constants-styles";
 
-const CANVAS_DISPLAY_RATIO = 0.8;
 const SQUARE_MIN_SIZE = 8;
 
 export default function CanvasWrapper(
