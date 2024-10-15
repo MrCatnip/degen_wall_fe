@@ -1,25 +1,27 @@
 import { BackdropCommon } from "@/app/common";
 import XIcon from "@/app/common/xIcon";
 import { PX_HEIGHT, PX_WIDTH } from "@/app/constants";
+import { LG_WIDTH } from "@/app/constants-styles";
+import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 import { PixelArray, UploadPopupProps } from "@/app/types";
 import { useRef, useEffect, useState } from "react";
 
 const UNEXPECTED_ERROR_MESSAGE = "Unexpected error";
 const UPLOAD_POPUP_CONTENT_MAX_SIZE = 350;
 
-const getSizeRatio = (pixelArray: PixelArray) => {
+const getSizeRatio = (pixelArray: PixelArray, popupMaxSize: number) => {
   if (!pixelArray?.length) return 0;
   const pixelArrayWidthRatio = Math.floor(
-    UPLOAD_POPUP_CONTENT_MAX_SIZE / pixelArray[0].length
+    popupMaxSize / pixelArray[0].length
   );
   const pixelArrayHeightRatio = Math.floor(
-    UPLOAD_POPUP_CONTENT_MAX_SIZE / pixelArray.length
+    popupMaxSize / pixelArray.length
   );
   const defaultWidthRatio = Math.floor(
-    UPLOAD_POPUP_CONTENT_MAX_SIZE / PX_WIDTH
+    popupMaxSize / PX_WIDTH
   );
   const defaultHeightRatio = Math.floor(
-    UPLOAD_POPUP_CONTENT_MAX_SIZE / PX_HEIGHT
+    popupMaxSize / PX_HEIGHT
   );
 
   const widthRatio =
@@ -68,6 +70,11 @@ export default function UploadPopup(props: UploadPopupProps) {
       fileInputRef.current.value = "";
     }
   };
+
+  const { width, height } = useWindowDimensions();
+
+  const ACTUAL_MAX_POPUP_SIZE =
+    width <= LG_WIDTH ? 150 : UPLOAD_POPUP_CONTENT_MAX_SIZE;
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -163,11 +170,11 @@ export default function UploadPopup(props: UploadPopupProps) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !pixelArray[0]?.length) return;
-    const sizeRatio = getSizeRatio(pixelArray);
+    const sizeRatio = getSizeRatio(pixelArray, ACTUAL_MAX_POPUP_SIZE);
     canvas.width =
-      pixelArray[0].length * sizeRatio || UPLOAD_POPUP_CONTENT_MAX_SIZE;
+      pixelArray[0].length * sizeRatio || ACTUAL_MAX_POPUP_SIZE;
     canvas.height =
-      pixelArray.length * sizeRatio || UPLOAD_POPUP_CONTENT_MAX_SIZE;
+      pixelArray.length * sizeRatio || ACTUAL_MAX_POPUP_SIZE;
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
     let i = 0;
@@ -192,7 +199,7 @@ export default function UploadPopup(props: UploadPopupProps) {
     <BackdropCommon open={popupUpload}>
       <div
         ref={menuRef}
-        className="bg-color-2 text-color-4 flex flex-col gap-4 p-6 rounded-lg"
+        className="bg-color-2 text-color-4 flex flex-col gap-4 p-6 rounded-lg max-w-full"
       >
         <div className="flex justify-between">
           <h3 className="text-xl font-semibold">Upload Image</h3>
