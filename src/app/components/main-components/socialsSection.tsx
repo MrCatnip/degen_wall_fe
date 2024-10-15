@@ -23,27 +23,66 @@ export default function SocialsSection(
         visibility: payer ? "visible" : "hidden",
         display: isEditMode ? "none" : "flex",
       }}
-      className="flex flex-col"
+      className="flex flex-col bg-color-2 p-6 gap-2"
     >
-      <p
+      <h3
         style={{
           display: name || ticker ? "block" : "none",
         }}
+        className="font-semibold text-xl"
       >
-        {name} ${ticker}
-      </p>
-      <div style={{ display: image ? "block" : "none" }}>
+        {name}
+        <a
+          href={`https://dexscreener.com/solana/${token}`}
+          className="text-color-5 hyperlink"
+          target="_blank"
+        >
+          ${ticker}
+        </a>
+      </h3>
+      <div
+        style={{
+          display: image ? "block" : "none",
+          maxWidth: "80%",
+          aspectRatio: "1 / 1",
+        }}
+      >
         <img src={image} alt="image" className="max-w-32"></img>
       </div>
+      <h3 className="font-semibold text-xl">About</h3>
       <p style={{ display: description ? "block" : "none" }}>{description}</p>
-      <p style={{ display: website ? "block" : "none" }}>Website: {website}</p>
-      <p style={{ display: twitter ? "block" : "none" }}>Twitter: {twitter}</p>
-      <p style={{ display: community ? "block" : "none" }}>
-        Community: {community}
-      </p>
-      <p style={{ display: token ? "block" : "none" }}>
-        Chart: https://dexscreener.com/solana/{token}
-      </p>
+      <button
+        className="common-button"
+        style={{ display: website ? "block" : "none" }}
+      >
+        <a href={`${website}`} target="_blank">
+          Website
+        </a>
+      </button>
+      <button
+        className="common-button"
+        style={{ display: twitter ? "block" : "none" }}
+      >
+        <a href={`${twitter}`} target="_blank">
+          Twitter
+        </a>
+      </button>
+      <button
+        className="common-button"
+        style={{ display: community ? "block" : "none" }}
+      >
+        <a href={`${community}`} target="_blank">
+          Community
+        </a>
+      </button>
+      <button
+        className="common-button"
+        style={{ display: token ? "block" : "none" }}
+      >
+        <a href={`https://dexscreener.com/solana/${token}`} target="_blank">
+          Dexscreener
+        </a>
+      </button>
     </div>
   );
 }
