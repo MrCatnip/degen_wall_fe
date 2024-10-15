@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import { CANVAS_DISPLAY_RATIO } from "@/app/constants-styles";
+import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 import { Socials } from "@/app/types";
 
 export default function SocialsSection(
@@ -24,11 +26,19 @@ export default function SocialsSection(
 
   const isSocialsTabVisible = isHeaderVisible || isAboutSectionVisible;
 
+  const { height, width } = useWindowDimensions();
+
+  const socialsSectionWidth = Math.floor((1 - CANVAS_DISPLAY_RATIO) * width);
+
   return (
     <div
       id="socials-tab"
       className="flex flex-col bg-color-2 p-6"
-      style={{ display: isEditMode ? "none" : "flex" }}
+      style={{
+        display: isEditMode ? "none" : "flex",
+        width: `${socialsSectionWidth}px`,
+        height: `100%`,
+      }}
     >
       {isSocialsTabVisible ? (
         <>
