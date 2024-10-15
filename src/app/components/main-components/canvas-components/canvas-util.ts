@@ -260,7 +260,20 @@ export const drawPixel = (
   squareSize: number,
   ctx: CanvasRenderingContext2D
 ) => {
-  ctx.fillStyle = `#${color}`; // Set the fill color
-  ctx.fillRect(x * squareSize, y * squareSize, squareSize, squareSize); // Draw the filled square
+  // Set the border color and draw the border
+  ctx.strokeStyle = "#555555"; // grey border
+  ctx.lineWidth = 1; // 1px border width
+  ctx.strokeRect(x * squareSize, y * squareSize, squareSize, squareSize); // Draw the border around the square
+
+  // Set the fill color for the inner square (actual pixel)
+  ctx.fillStyle = `#${color}`;
+  // Draw the inner square, it fits exactly inside the border
+  ctx.fillRect(
+    x * squareSize + 0.5, // Adjust by 0.5px to account for border width
+    y * squareSize + 0.5, // Adjust by 0.5px to account for border width
+    squareSize - 1, // Reduce the size by 1px to fit the border
+    squareSize - 1 // Reduce the size by 1px to fit the border
+  );
+
   return ctx; // Return the context
 };
