@@ -264,7 +264,7 @@ export default function CanvasEdit(
   return (
     <div
       id="canvas-edit"
-      className="flex absolute overflow-hidden"
+      className="flex absolute overflow-hidden border border-black"
       style={{ opacity: isEditMode ? 1 : 0, zIndex: isEditMode ? 1 : -1 }}
     >
       <canvas ref={canvasRef} onDragStart={(e) => e.preventDefault()} />
