@@ -10,6 +10,8 @@ import { MAX_SOCIALS_SIZE } from "@/app/constants";
 import { TOAST_LIFE_MS } from "@/app/constants-styles";
 
 const MAX_RETRY_ATTEMPTS = 3;
+const TWITTER_REGEX =
+  /(?:https?:\/\/)?(?:x\.com|twitter\.com)\/([A-Za-z0-9_]+)/;
 
 export default function PayButton(props: PayButtonProps) {
   const {
@@ -54,11 +56,20 @@ export default function PayButton(props: PayButtonProps) {
               };
               eventEmitter.on(EVENT_NAME, handleEvent);
             });
-
+            const getParsedTwitter = () => {
+              if (socials.twitter) {
+                const match = socials.twitter.match(TWITTER_REGEX);
+                if (match) return match[1];
+              }
+              return "";
+            };
             const txResult: TxResult = await Promise.race([
               anchorContext.createMetadataAccount(
-                //@ts-expect-error shut the fuck up
-                { ...socials, payer: wallet?.publicKey.toString() },
+                {
+                  ...socials, //@ts-expect-error shut the fuck up
+                  payer: wallet?.publicKey.toString(),
+                  twitter: getParsedTwitter(),
+                },
                 chunks[i],
                 token,
                 id
