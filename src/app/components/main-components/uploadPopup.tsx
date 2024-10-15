@@ -5,6 +5,35 @@ import { PixelArray, UploadPopupProps } from "@/app/types";
 import { useRef, useEffect, useState } from "react";
 
 const UNEXPECTED_ERROR_MESSAGE = "Unexpected error";
+const UPLOAD_POPUP_CONTENT_MAX_SIZE = 350;
+
+const getSizeRatio = (pixelArray: PixelArray) => {
+  if (!pixelArray?.length) return 0;
+  const pixelArrayWidthRatio = Math.floor(
+    UPLOAD_POPUP_CONTENT_MAX_SIZE / pixelArray[0].length
+  );
+  const pixelArrayHeightRatio = Math.floor(
+    UPLOAD_POPUP_CONTENT_MAX_SIZE / pixelArray.length
+  );
+  const defaultWidthRatio = Math.floor(
+    UPLOAD_POPUP_CONTENT_MAX_SIZE / PX_WIDTH
+  );
+  const defaultHeightRatio = Math.floor(
+    UPLOAD_POPUP_CONTENT_MAX_SIZE / PX_HEIGHT
+  );
+
+  const widthRatio =
+    pixelArrayWidthRatio > defaultWidthRatio
+      ? pixelArrayWidthRatio
+      : pixelArrayWidthRatio;
+  const heightRatio =
+    pixelArrayHeightRatio > defaultHeightRatio
+      ? pixelArrayHeightRatio
+      : pixelArrayHeightRatio;
+
+  console.log(widthRatio, heightRatio);
+  return Math.min(widthRatio, heightRatio);
+};
 
 export default function UploadPopup(props: UploadPopupProps) {
   const { popupUpload, onClosePopupUpload, onSaveImage } = props;
@@ -131,6 +160,32 @@ export default function UploadPopup(props: UploadPopupProps) {
     };
   }, [popupUpload, onClosePopupUpload]);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !pixelArray[0]?.length) return;
+    const sizeRatio = getSizeRatio(pixelArray);
+    canvas.width =
+      pixelArray[0].length * sizeRatio || UPLOAD_POPUP_CONTENT_MAX_SIZE;
+    canvas.height =
+      pixelArray.length * sizeRatio || UPLOAD_POPUP_CONTENT_MAX_SIZE;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
+    let i = 0;
+    let j = 0;
+    if (ctx)
+      for (let y = 0; y < pixelArray.length; y++) {
+        for (let x = 0; x < pixelArray[y].length; x++) {
+          const color = pixelArray[y][x]; // Get the color code for each pixel
+          // Set the fill color for the pixel
+          ctx.fillStyle = color ? `#${color}` : "rgba(0,0,0,0)";
+          if (!color) i++;
+          else j++;
+          // Draw the pixel as a rectangle on the canvas
+          ctx.fillRect(x * sizeRatio, y * sizeRatio, sizeRatio, sizeRatio);
+        }
+      }
+  }, [pixelArray]);
+
   const saveButtonDisabled = (!pixelArray.length || errorMessage) as boolean;
 
   return (
@@ -152,11 +207,18 @@ export default function UploadPopup(props: UploadPopupProps) {
           accept="image/*"
           onChange={handleImageChange}
         />
-        <canvas
-          ref={canvasRef}
-          onDragStart={(e) => e.preventDefault()}
-          style={{ maxWidth: `${PX_WIDTH}px`, maxHeight: `${PX_HEIGHT}px` }}
-        />
+        <div
+          style={{
+            maxWidth: `${UPLOAD_POPUP_CONTENT_MAX_SIZE}px`,
+            maxHeight: `${UPLOAD_POPUP_CONTENT_MAX_SIZE}px`,
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            onDragStart={(e) => e.preventDefault()}
+            style={{}}
+          />
+        </div>
         <button
           className={
             "common-button" +
