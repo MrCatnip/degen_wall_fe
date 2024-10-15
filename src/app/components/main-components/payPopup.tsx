@@ -206,7 +206,7 @@ export default function PayPopup(props: PayPopupProps) {
       <BackdropCommon open={popupPay}>
         <div
           ref={menuRef}
-          className="relative bg-color-2 text-color-4 p-6 flex flex-col gap-2 rounded-lg"
+          className="relative bg-color-2 text-color-4 p-6 flex flex-col gap-2 rounded-lg max-h-full overflow-scroll"
         >
           <div className="flex justify-between mb-6">
             <h3 className="text-xl font-semibold">Project Info</h3>
