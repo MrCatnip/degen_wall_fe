@@ -26,6 +26,9 @@ const config: Config = {
       margin: {
         "1.75": "7px",
       },
+      width: {
+        "4/10": "40%",
+      },
     },
     screens: {
       lg: { max: "1023px" },
