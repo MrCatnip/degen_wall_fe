@@ -2,6 +2,7 @@ import { BackdropCommon } from "@/app/common";
 import { RPC_URL_KEY, SUGGESTED_RPC } from "@/app/constants";
 import {
   ICON_SIZE,
+  LG_WIDTH,
   SETTINGS_MENU_WIDTH,
   TOAST_LIFE_MS,
   WALLET_CONTAINER_HEIGHT,
@@ -15,6 +16,7 @@ import { ThemeButtonProps } from "@/app/types";
 import { Toast } from "primereact/toast";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import useWindowDimensions from "@/app/hooks/useWindowDimensions";
 
 export default function SettingsMenu() {
   const toast = useRef<Toast>(null);
@@ -164,6 +166,9 @@ export default function SettingsMenu() {
     display: display ? "block" : "none",
   });
 
+  const { width, height } = useWindowDimensions();
+  const isMobile = width <= LG_WIDTH;
+
   const defaultOutline = "solid var(--color-1)";
 
   return (
@@ -189,11 +194,17 @@ export default function SettingsMenu() {
         <div
           ref={menuRef}
           className="bg-color-2 text-color-4 flex flex-col gap-2 absolute mt-1 p-6 rounded-lg"
-          style={{
-            top: `${menuPosition.top}px`,
-            left: `${menuPosition.left - SETTINGS_MENU_WIDTH + ICON_SIZE}px`,
-            width: `${SETTINGS_MENU_WIDTH}px`,
-          }}
+          style={
+            isMobile
+              ? { width: `${SETTINGS_MENU_WIDTH}px` }
+              : {
+                  top: `${menuPosition.top}px`,
+                  left: `${
+                    menuPosition.left - SETTINGS_MENU_WIDTH + ICON_SIZE
+                  }px`,
+                  width: `${SETTINGS_MENU_WIDTH}px`,
+                }
+          }
         >
           <div className="flex justify-between">
             <h3 className="text-xl line font-semibold">Settings</h3>
