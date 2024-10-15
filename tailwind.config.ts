@@ -27,6 +27,9 @@ const config: Config = {
         "1.75": "7px",
       },
     },
+    screens: {
+      lg: { max: "1023px" },
+    },
   },
   plugins: [],
 };
